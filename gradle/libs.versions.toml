@@ -1,8 +1,22 @@
 [versions]
 # Plugins
 shadow = "9.3.0"
+plugin-yml = "0.6.0"
+
+# Dependencies
+toml4j = "0.7.2"
+spigot-api = "1.21.11-R0.1-SNAPSHOT"
+lombok = "1.18.38"
+jetbrains-annotations = "26.0.2-1"
+hoglin = "1.2.0"
 
 [plugins]
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
+plugin-yml-bukkit = { id = "net.minecrell.plugin-yml.bukkit", version.ref = "plugin-yml" }
 
 [libraries]
+jtoml = { module = "com.moandjiezana.toml:toml4j", version.ref = "toml4j" }
+spigot-api = { module = "org.spigotmc:spigot-api", version.ref = "spigot-api" }
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrains-annotations" }
+hoglin = { module = "gg.hoglin:sdk", version.ref = "hoglin" }

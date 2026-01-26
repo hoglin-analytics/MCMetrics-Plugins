@@ -1,0 +1,6 @@
+[hoglin]
+server_key = "" # Your server key can be found on the settings panel of your Hoglin server
+
+# An auto flush perioidcally pushes a batch of cached analytics from the server to Hoglin
+auto_flush_interval = 15000 # Interval in milliseconds to push events to Hoglin
+auto_flush_max_batch_size = 10000 # Maximum number to send in a single batch
