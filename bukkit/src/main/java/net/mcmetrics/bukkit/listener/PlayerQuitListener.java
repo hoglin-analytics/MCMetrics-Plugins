@@ -1,7 +1,7 @@
 package net.mcmetrics.bukkit.listener;
 
 import net.mcmetrics.bukkit.MCMetrics;
-import net.mcmetrics.common.analytic.impl.PlayerQuitAnalytic;
+import net.mcmetrics.common.analytic.player.PlayerQuitAnalytic;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;

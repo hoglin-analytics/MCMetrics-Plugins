@@ -1,7 +1,7 @@
 package net.mcmetrics.bukkit.listener;
 
 import net.mcmetrics.bukkit.MCMetrics;
-import net.mcmetrics.common.analytic.impl.PlayerJoinAnalytic;
+import net.mcmetrics.common.analytic.player.PlayerJoinAnalytic;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;

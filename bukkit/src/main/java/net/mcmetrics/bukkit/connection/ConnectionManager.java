@@ -1,7 +1,7 @@
 package net.mcmetrics.bukkit.connection;
 
 import net.mcmetrics.bukkit.MCMetrics;
-import net.mcmetrics.common.analytic.impl.ServerPlayerCountAnalytic;
+import net.mcmetrics.common.analytic.ServerPlayerCountAnalytic;
 import net.mcmetrics.common.util.BedrockUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

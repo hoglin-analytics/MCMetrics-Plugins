@@ -1,4 +1,4 @@
-package net.mcmetrics.common.analytic.impl;
+package net.mcmetrics.common.analytic;
 
 import gg.hoglin.sdk.models.analytic.NamedAnalytic;
 import lombok.Data;

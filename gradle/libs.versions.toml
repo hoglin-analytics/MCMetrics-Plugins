@@ -9,6 +9,9 @@ spigot-api = "1.21.11-R0.1-SNAPSHOT"
 lombok = "1.18.38"
 jetbrains-annotations = "26.0.2-1"
 hoglin = "1.2.0"
+cloud = "2.0.0"
+cloud-bukkit = "2.0.0-beta.14"
+cloud-paper = "2.0.0-beta.14"
 
 [plugins]
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
@@ -20,3 +23,6 @@ spigot-api = { module = "org.spigotmc:spigot-api", version.ref = "spigot-api" }
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
 jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrains-annotations" }
 hoglin = { module = "gg.hoglin:sdk", version.ref = "hoglin" }
+cloud-core = { module = "org.incendo:cloud-core", version.ref = "cloud" }
+cloud-annotations = { module = "org.incendo:cloud-annotations", version.ref = "cloud" }
+cloud-paper = { module = "org.incendo:cloud-paper", version.ref = "cloud-paper" }

@@ -5,6 +5,7 @@ plugins {
 dependencies {
     implementation(project(":common"))
     implementation(libs.spigot.api)
+    implementation(libs.cloud.paper)
 }
 
 bukkit {
