@@ -16,6 +16,7 @@ public class MCMetrics extends JavaPlugin {
     private final TomlConfigLoader<MCMetricsBukkitConfig> configLoader = new TomlConfigLoader<>(getDataFolder(), "config.toml", "default-config.toml", MCMetricsBukkitConfig.class);
     private final HoglinLoader hoglinLoader = new HoglinLoader();
 
+    @Getter
     private MCMetricsBukkitConfig config;
 
     @Override
