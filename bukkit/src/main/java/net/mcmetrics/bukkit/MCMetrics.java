@@ -4,6 +4,7 @@ import gg.hoglin.sdk.Hoglin;
 import lombok.Getter;
 import net.mcmetrics.bukkit.config.MCMetricsBukkitConfig;
 import net.mcmetrics.bukkit.connection.ConnectionManager;
+import net.mcmetrics.bukkit.listener.PlayerChatListener;
 import net.mcmetrics.bukkit.listener.PlayerJoinListener;
 import net.mcmetrics.bukkit.listener.PlayerQuitListener;
 import net.mcmetrics.common.HoglinLoader;
@@ -55,6 +56,7 @@ public class MCMetrics extends JavaPlugin {
    private void postSuccessfulReload() {
        Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(this), this);
        Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(this), this);
+       Bukkit.getPluginManager().registerEvents(new PlayerChatListener(this), this);
    }
 
     public Hoglin getHoglin() {
