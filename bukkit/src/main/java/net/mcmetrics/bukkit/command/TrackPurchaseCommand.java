@@ -32,15 +32,13 @@ public class TrackPurchaseCommand {
             return;
         }
 
-        MCMetrics.getInstance().getHoglin().track(
-            new PlayerPurchaseAnalytic(
-                    MCMetrics.getInstance().getMcMetricsConfig().instance().reference(),
-                    playerUuid,
-                    productName,
-                    currency,
-                    purchaseValue
-            )
-        );
+        MCMetrics.getInstance().getHoglin().track(new PlayerPurchaseAnalytic(
+            MCMetrics.getInstance().getMcMetricsConfig().instance().id(),
+            playerUuid,
+            productName,
+            currency,
+            purchaseValue
+        ));
     }
 
 }

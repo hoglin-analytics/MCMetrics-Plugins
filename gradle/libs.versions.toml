@@ -6,7 +6,7 @@ plugin-yml = "0.6.0"
 # Dependencies
 toml4j = "0.7.2"
 spigot-api = "1.21.11-R0.1-SNAPSHOT"
-lombok = "1.18.38"
+lombok = "1.18.42"
 jetbrains-annotations = "26.0.2-1"
 hoglin = "1.2.0"
 cloud = "2.0.0"

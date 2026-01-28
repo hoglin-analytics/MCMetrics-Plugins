@@ -2,9 +2,7 @@ package net.mcmetrics.bukkit.connection;
 
 import net.mcmetrics.bukkit.MCMetrics;
 import net.mcmetrics.common.analytic.ServerPlayerCountAnalytic;
-import net.mcmetrics.common.util.BedrockUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import net.mcmetrics.common.player.TrackedPlayer;
 
 public class ConnectionManager {
 
@@ -18,18 +16,17 @@ public class ConnectionManager {
         int javaCount = 0;
         int bedrockCount = 0;
 
-        for (final Player player : Bukkit.getOnlinePlayers()) {
-            if (BedrockUtil.isBedrock(player.getUniqueId())) {
-                bedrockCount++;
-            } else {
-                javaCount++;
+        for (final TrackedPlayer player : mcMetrics.getSessionManager().getAllPlayers()) {
+            switch (player.getClientPlatform()) {
+                case JAVA -> javaCount++;
+                case BEDROCK -> bedrockCount++;
             }
         }
 
         mcMetrics.getHoglin().track(new ServerPlayerCountAnalytic(
-                mcMetrics.getMcMetricsConfig().instance().reference(),
-                javaCount,
-                bedrockCount
+            mcMetrics.getMcMetricsConfig().instance().id(),
+            javaCount,
+            bedrockCount
         ));
     }
 

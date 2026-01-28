@@ -6,4 +6,4 @@ auto_flush_interval = 15000 # Interval in milliseconds to push events to Hoglin
 auto_flush_max_batch_size = 10000 # Maximum number to send in a single batch
 
 [instance]
-reference = "" # The unique identifier for this server instance (e.g. "lobby-1")
+id = "" # The unique identifier for this server instance (e.g. "lobby-1")

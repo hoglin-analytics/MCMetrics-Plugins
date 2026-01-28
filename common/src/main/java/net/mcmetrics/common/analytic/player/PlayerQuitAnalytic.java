@@ -12,7 +12,7 @@ import java.util.UUID;
 @Data
 public class PlayerQuitAnalytic implements NamedAnalytic {
 
-    private final @NotNull String instanceReference;
+    private final @NotNull String instance;
     private final @NotNull UUID playerUUID;
 
     @Override

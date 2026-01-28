@@ -6,5 +6,5 @@ import lombok.experimental.Accessors;
 @Getter
 @Accessors(fluent = true)
 public class InstanceConfig {
-    private String reference;
+    private String id;
 }

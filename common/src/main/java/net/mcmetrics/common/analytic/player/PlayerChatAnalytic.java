@@ -12,7 +12,7 @@ import java.util.UUID;
 @Data
 public class PlayerChatAnalytic implements NamedAnalytic {
 
-    private final @NotNull String instanceReference;
+    private final @NotNull String instance;
     private final @NotNull UUID playerUUID;
     private final @NotNull String message;
 
