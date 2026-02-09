@@ -32,6 +32,8 @@ public class HoglinLoader {
             .maxBatchSize(config.autoFlushMaxBatchSize())
             .build();
 
+        hoglin.evaluateExperiment("");
+
         return true;
     }
 

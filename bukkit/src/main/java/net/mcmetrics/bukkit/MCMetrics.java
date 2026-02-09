@@ -10,6 +10,7 @@ import net.mcmetrics.bukkit.connection.ConnectionManager;
 import net.mcmetrics.bukkit.listener.PlayerChatListener;
 import net.mcmetrics.bukkit.listener.PlayerJoinListener;
 import net.mcmetrics.bukkit.listener.PlayerQuitListener;
+import net.mcmetrics.bukkit.runnable.ServerHeartbeatTask;
 import net.mcmetrics.common.HoglinLoader;
 import net.mcmetrics.common.config.TomlConfigLoader;
 import net.mcmetrics.common.player.SessionManager;
@@ -39,6 +40,17 @@ public class MCMetrics extends JavaPlugin {
     public void onEnable() {
         setupCommands();
         attemptReload();
+
+        Bukkit.getScheduler().runTaskTimer(this, new ServerHeartbeatTask(), 0, 1200); // 1 minute interval
+    }
+
+    @Override
+    public void onDisable() {
+        new ServerHeartbeatTask().run();
+
+        if (hoglinLoader.isLoaded()) {
+            hoglinLoader.getHoglin().close();
+        }
     }
 
     public boolean attemptReload() {
