@@ -10,7 +10,7 @@ import net.mcmetrics.bukkit.connection.ConnectionManager;
 import net.mcmetrics.bukkit.listener.PlayerChatListener;
 import net.mcmetrics.bukkit.listener.PlayerJoinListener;
 import net.mcmetrics.bukkit.listener.PlayerQuitListener;
-import net.mcmetrics.bukkit.runnable.ServerHeartbeatTask;
+import net.mcmetrics.bukkit.task.ServerHeartbeatTask;
 import net.mcmetrics.common.HoglinLoader;
 import net.mcmetrics.common.config.TomlConfigLoader;
 import net.mcmetrics.common.player.SessionManager;

@@ -1,8 +1,7 @@
-package net.mcmetrics.bukkit.runnable;
+package net.mcmetrics.bukkit.task;
 
 import gg.hoglin.sdk.Hoglin;
 import net.mcmetrics.bukkit.MCMetrics;
-import net.mcmetrics.common.analytic.ServerHeartbeatAnalytic;
 
 public class ServerHeartbeatTask implements Runnable {
 
@@ -13,7 +12,7 @@ public class ServerHeartbeatTask implements Runnable {
             return;
         }
 
-        hoglin.track(new ServerHeartbeatAnalytic());
+        MCMetrics.getInstance().getConnectionManager().pushPlayerCountUpdate();
     }
 
 }
