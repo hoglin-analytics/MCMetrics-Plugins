@@ -21,17 +21,20 @@ public class PlayerJoinAnalytic implements NamedAnalytic {
     private final @NotNull String hostName;
     private final @NotNull String ip;
     private final @NotNull ClientPlatform clientPlatform;
+    private final @NotNull boolean isNewPlayer;
 
     public PlayerJoinAnalytic(
         final @NotNull String instance,
         final @NotNull UUID playerUUID,
-        final @NotNull TrackedPlayer trackedPlayer
+        final @NotNull TrackedPlayer trackedPlayer,
+        final @NotNull boolean isNewPlayer
     ) {
         this.instance = instance;
         this.playerUUID = playerUUID;
         this.hostName = trackedPlayer.getHostName();
         this.ip = trackedPlayer.getIp();
         this.clientPlatform = trackedPlayer.getClientPlatform();
+        this.isNewPlayer = isNewPlayer;
     }
 
     @Override

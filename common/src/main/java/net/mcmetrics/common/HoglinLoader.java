@@ -27,10 +27,16 @@ public class HoglinLoader {
             return false;
         }
 
-        hoglin = Hoglin.builder(config.serverKey())
+        Hoglin.HoglinBuilder builder = Hoglin.builder(config.serverKey())
             .autoFlushInterval(config.autoFlushInterval())
-            .maxBatchSize(config.autoFlushMaxBatchSize())
-            .build();
+            .maxBatchSize(config.autoFlushMaxBatchSize());
+
+        if (System.getProperty("hoglin.base.url") != null) {
+            builder = builder.baseUrl(System.getProperty("hoglin.base.url"));
+            System.out.println("Hoglin API URL overrided by environment variable: " + System.getProperty("hoglin.base.url"));
+        }
+
+        hoglin = builder.build();
 
         hoglin.evaluateExperiment("");
 
