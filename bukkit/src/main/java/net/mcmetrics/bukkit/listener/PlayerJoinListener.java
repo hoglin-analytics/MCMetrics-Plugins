@@ -45,7 +45,8 @@ public class PlayerJoinListener implements Listener {
         mcMetrics.getHoglin().track(new PlayerJoinAnalytic(
             mcMetrics.getMcMetricsConfig().instance().id(),
             event.getPlayer().getUniqueId(),
-            trackedPlayer
+            trackedPlayer,
+            !event.getPlayer().hasPlayedBefore()
         ));
 
         mcMetrics.getConnectionManager().pushPlayerCountUpdate();
