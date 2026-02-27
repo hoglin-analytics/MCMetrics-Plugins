@@ -3,6 +3,7 @@ package net.mcmetrics.bukkit;
 import gg.hoglin.sdk.Hoglin;
 import lombok.AccessLevel;
 import lombok.Getter;
+import net.mcmetrics.bukkit.command.FlushCommand;
 import net.mcmetrics.bukkit.command.ReloadCommand;
 import net.mcmetrics.bukkit.command.TrackPurchaseCommand;
 import net.mcmetrics.bukkit.config.MCMetricsBukkitConfig;
@@ -23,6 +24,14 @@ import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.bukkit.CloudBukkitCapabilities;
 import org.incendo.cloud.execution.ExecutionCoordinator;
 import org.incendo.cloud.paper.LegacyPaperCommandManager;
+
+import java.io.IOException;
+import java.net.Socket;
+import java.net.URI;
+import java.net.UnknownHostException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 @Getter
 public class MCMetrics extends JavaPlugin {
@@ -99,6 +108,7 @@ public class MCMetrics extends JavaPlugin {
        final AnnotationParser<CommandSender> annotationParser = new AnnotationParser<>(manager, CommandSender.class);
        annotationParser.parse(new TrackPurchaseCommand());
        annotationParser.parse(new ReloadCommand());
+       annotationParser.parse(new FlushCommand());
    }
 
     public Hoglin getHoglin() {
