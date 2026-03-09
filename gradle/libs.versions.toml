@@ -13,6 +13,7 @@ hoglin = "1.2.0"
 cloud = "2.0.0"
 cloud-bukkit = "2.0.0-beta.14"
 cloud-paper = "2.0.0-beta.14"
+uuid-generator = "5.1.0"
 
 [plugins]
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
@@ -28,3 +29,4 @@ hoglin = { module = "gg.hoglin:sdk", version.ref = "hoglin" }
 cloud-core = { module = "org.incendo:cloud-core", version.ref = "cloud" }
 cloud-annotations = { module = "org.incendo:cloud-annotations", version.ref = "cloud" }
 cloud-paper = { module = "org.incendo:cloud-paper", version.ref = "cloud-paper" }
+uuid-generator = { module = "com.fasterxml.uuid:java-uuid-generator", version.ref = "uuid-generator" }

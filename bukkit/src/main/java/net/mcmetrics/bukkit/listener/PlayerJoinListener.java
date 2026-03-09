@@ -1,5 +1,6 @@
 package net.mcmetrics.bukkit.listener;
 
+import com.fasterxml.uuid.Generators;
 import net.mcmetrics.bukkit.MCMetrics;
 import net.mcmetrics.common.analytic.player.PlayerJoinAnalytic;
 import net.mcmetrics.common.platform.PlatformUtil;
@@ -28,10 +29,13 @@ public class PlayerJoinListener implements Listener {
 
         final UUID uuid = event.getPlayer().getUniqueId();
         final TrackedPlayer player = mcMetrics.getSessionManager().addPlayer(uuid);
+        final UUID sessionId = Generators.timeBasedGenerator().generate();
 
+        player.setSessionId(sessionId.toString());
         player.setIp(event.getAddress().getHostAddress());
         player.setHostName(event.getHostname());
         player.setClientPlatform(PlatformUtil.getPlatform(uuid));
+        player.setSessionStart(System.currentTimeMillis());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -44,6 +48,7 @@ public class PlayerJoinListener implements Listener {
 
         mcMetrics.getHoglin().track(new PlayerJoinAnalytic(
             mcMetrics.getMcMetricsConfig().instance().id(),
+            trackedPlayer.getSessionId(),
             event.getPlayer().getUniqueId(),
             trackedPlayer,
             !event.getPlayer().hasPlayedBefore()

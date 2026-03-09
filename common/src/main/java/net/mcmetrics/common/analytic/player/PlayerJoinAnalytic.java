@@ -17,24 +17,27 @@ import java.util.UUID;
 public class PlayerJoinAnalytic implements NamedAnalytic {
 
     private final @NotNull String instance;
+    private final @NotNull String sessionId;
     private final @NotNull UUID playerUUID;
     private final @NotNull String hostName;
     private final @NotNull String ip;
     private final @NotNull ClientPlatform clientPlatform;
-    private final @NotNull boolean isNewPlayer;
+    private final boolean newPlayer;
 
     public PlayerJoinAnalytic(
         final @NotNull String instance,
+        final @NotNull String sessionId,
         final @NotNull UUID playerUUID,
         final @NotNull TrackedPlayer trackedPlayer,
-        final @NotNull boolean isNewPlayer
+        final boolean newPlayer
     ) {
         this.instance = instance;
+        this.sessionId = sessionId;
         this.playerUUID = playerUUID;
         this.hostName = trackedPlayer.getHostName();
         this.ip = trackedPlayer.getIp();
         this.clientPlatform = trackedPlayer.getClientPlatform();
-        this.isNewPlayer = isNewPlayer;
+        this.newPlayer = newPlayer;
     }
 
     @Override
