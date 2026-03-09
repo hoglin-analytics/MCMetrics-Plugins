@@ -13,6 +13,7 @@ public class ServerPlayerCountAnalytic implements NamedAnalytic {
     private final @NotNull String instance;
     private final @NotNull Integer javaPlayerCount;
     private final @NotNull Integer bedrockPlayerCount;
+    private final @NotNull Integer totalPlayerCount;
 
     @Override
     public @NotNull String getEventType() {

@@ -2,6 +2,7 @@ package net.mcmetrics.bukkit.listener;
 
 import net.mcmetrics.bukkit.MCMetrics;
 import net.mcmetrics.common.analytic.player.PlayerQuitAnalytic;
+import net.mcmetrics.common.player.TrackedPlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -19,10 +20,19 @@ public class PlayerQuitListener implements Listener {
     @EventHandler
     public void onQuit(final PlayerQuitEvent event) {
         final UUID uuid = event.getPlayer().getUniqueId();
+        final TrackedPlayer trackedPlayer = this.mcMetrics.getSessionManager().getPlayer(uuid);
+        if (trackedPlayer == null) {
+            mcMetrics.getLogger().severe("TrackedPlayer not found for UUID: " + uuid);
+            return;
+        }
+
+        long sessionTime = System.currentTimeMillis() - trackedPlayer.getSessionStart();
 
         mcMetrics.getHoglin().track(new PlayerQuitAnalytic(
             mcMetrics.getMcMetricsConfig().instance().id(),
-            uuid
+            trackedPlayer.getSessionId(),
+            uuid,
+            sessionTime
         ));
 
         mcMetrics.getSessionManager().removePlayer(uuid);

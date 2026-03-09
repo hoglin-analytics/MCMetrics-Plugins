@@ -13,7 +13,9 @@ import java.util.UUID;
 public class PlayerQuitAnalytic implements NamedAnalytic {
 
     private final @NotNull String instance;
+    private final @NotNull String sessionId;
     private final @NotNull UUID playerUUID;
+    private final long sessionTime;
 
     @Override
     public @NotNull String getEventType() {
