@@ -26,7 +26,8 @@ public class ConnectionManager {
         mcMetrics.getHoglin().track(new ServerPlayerCountAnalytic(
             mcMetrics.getMcMetricsConfig().instance().id(),
             javaCount,
-            bedrockCount
+            bedrockCount,
+            javaCount + bedrockCount
         ));
     }
 
