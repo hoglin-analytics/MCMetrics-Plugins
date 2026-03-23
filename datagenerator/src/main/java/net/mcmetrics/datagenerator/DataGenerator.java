@@ -127,7 +127,7 @@ public class DataGenerator {
                             playerSession.hostname,
                             playerSession.ip,
                             playerSession.isJava ? ClientPlatform.JAVA : ClientPlatform.BEDROCK,
-                            t - playerSession.startTime
+                            (t - playerSession.startTime) * 60 * 1000
                     );
                     events.add(new RecordedAnalytic<>("player_quit", start, analytic));
                 }
