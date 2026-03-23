@@ -24,7 +24,8 @@ public class PlayerChatListener implements Listener {
         mcMetrics.getHoglin().track(new PlayerChatAnalytic(
             mcMetrics.getMcMetricsConfig().instance().id(),
             event.getPlayer().getUniqueId(),
-                event.getMessage()
+                event.getMessage(),
+                false, false, false, false, false
         ));
     }
 

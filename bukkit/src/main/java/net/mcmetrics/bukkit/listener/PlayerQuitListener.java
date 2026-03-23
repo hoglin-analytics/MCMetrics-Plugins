@@ -32,6 +32,9 @@ public class PlayerQuitListener implements Listener {
             mcMetrics.getMcMetricsConfig().instance().id(),
             trackedPlayer.getSessionId(),
             uuid,
+            trackedPlayer.getHostName(),
+            trackedPlayer.getIp(),
+            trackedPlayer.getClientPlatform(),
             sessionTime
         ));
 
