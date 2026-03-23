@@ -16,7 +16,7 @@ public class PlayerPurchaseAnalytic implements NamedAnalytic {
     private final @NotNull UUID playerUUID;
     private final @NotNull String productName;
     private final @NotNull String currency;
-    private final @NotNull Float purchaseValue;
+    private final @NotNull Double purchaseValue;
 
     @Override
     public @NotNull String getEventType() {
