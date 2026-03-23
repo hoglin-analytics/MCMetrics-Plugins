@@ -15,6 +15,11 @@ public class PlayerChatAnalytic implements NamedAnalytic {
     private final @NotNull String instance;
     private final @NotNull UUID playerUUID;
     private final @NotNull String message;
+    private final boolean toxic;
+    private final boolean severeToxic;
+    private final boolean obscene;
+    private final boolean threat;
+    private final boolean identityHate;
 
     @Override
     public @NotNull String getEventType() {
