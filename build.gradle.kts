@@ -13,6 +13,7 @@ allprojects {
         mavenCentral()
         maven("https://hub.spigotmc.org/nexus/content/groups/public/")
         maven("https://maven.waypointstudios.com/releases/")
+        maven("https://repo.papermc.io/repository/maven-public/")
     }
 }
 
