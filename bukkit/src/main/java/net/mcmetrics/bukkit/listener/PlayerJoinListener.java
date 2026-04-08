@@ -40,6 +40,16 @@ public class PlayerJoinListener implements Listener {
         player.setSessionStart(System.currentTimeMillis());
 
         this.mcMetrics.getHoglin().addPlayerToExperimentCache(uuid);
+
+        // Fire experiments
+        if (!event.getPlayer().hasPlayedBefore()) {
+            this.mcMetrics.getHoglin().getExperiments().values().stream()
+                    .filter(data -> data.getEnabled() &&
+                            data.getTrigger() == ExperimentData.Trigger.FIRST_JOIN)
+                    .forEach(data -> {
+                        ExperimentUtil.triggerExperiment(this.mcMetrics.getHoglin(), data, event.getPlayer());
+                    });
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -63,7 +73,7 @@ public class PlayerJoinListener implements Listener {
         // Fire experiments
         this.mcMetrics.getHoglin().getExperiments().values().stream()
                 .filter(data -> data.getEnabled() &&
-                        (data.getTrigger() == ExperimentData.Trigger.JOIN || data.getTrigger() == ExperimentData.Trigger.FIRST_JOIN))
+                        data.getTrigger() == ExperimentData.Trigger.JOIN)
                 .forEach(data -> {
                     ExperimentUtil.triggerExperiment(this.mcMetrics.getHoglin(), data, event.getPlayer());
                 });
