@@ -47,6 +47,7 @@ public class DataGenerator {
      */
     public List<RecordedAnalytic<? extends NamedAnalytic>> runSimulation() {
         Instant start = Instant.now().minus(HORIZON, ChronoUnit.MINUTES);
+        Instant curTime;
         List<RecordedAnalytic<? extends NamedAnalytic>> events = new ArrayList<>();
 
         Set<UUID> players = new HashSet<>();
@@ -63,7 +64,7 @@ public class DataGenerator {
         while (!queue.isEmpty()) {
             Event event = queue.poll();
             long t = event.timestamp;
-            start = start.plus(t, ChronoUnit.MINUTES);
+            curTime = start.plus(t, ChronoUnit.MINUTES);
 
             if (t > HORIZON) break;
 
@@ -112,7 +113,7 @@ public class DataGenerator {
                             ip,
                             isJava ? ClientPlatform.JAVA : ClientPlatform.BEDROCK,
                             isNew);
-                    events.add(new RecordedAnalytic<>("player_join", start, analytic));
+                    events.add(new RecordedAnalytic<>("player_join", curTime, analytic));
                 } else {
                     // Player quiting
                     uuid = getRandomElement(sessions.keySet());
@@ -129,7 +130,7 @@ public class DataGenerator {
                             playerSession.isJava ? ClientPlatform.JAVA : ClientPlatform.BEDROCK,
                             (t - playerSession.startTime) * 60 * 1000
                     );
-                    events.add(new RecordedAnalytic<>("player_quit", start, analytic));
+                    events.add(new RecordedAnalytic<>("player_quit", curTime, analytic));
                 }
             }
 
@@ -143,7 +144,7 @@ public class DataGenerator {
                     // Add event
                     PlayerSession session = sessions.get(uuid);
                     PlayerChatAnalytic analytic = new PlayerChatAnalytic(session.instance, uuid, "Lorem ipsum", isToxic);
-                    events.add(new RecordedAnalytic<>("player_chat", start, analytic));
+                    events.add(new RecordedAnalytic<>("player_chat", curTime, analytic));
                 }
             }
 
@@ -156,7 +157,7 @@ public class DataGenerator {
                     String pkg = getRandomElement(PACKAGES);
                     double price = getRandomElement(PURCHASE_PRICES);
                     PlayerPurchaseAnalytic analytic =  new PlayerPurchaseAnalytic(instance, uuid, pkg, CURRENCY, price);
-                    events.add(new RecordedAnalytic<>("player_purchase", start, analytic));
+                    events.add(new RecordedAnalytic<>("player_purchase", curTime, analytic));
                 }
             }
 
@@ -170,7 +171,7 @@ public class DataGenerator {
                     int totalJavaPlayers = javaPlayers.stream().filter(uuids::contains).toList().size();
                     int totalBedrockPlayers = totalPlayers - totalJavaPlayers;
                     ServerPlayerCountAnalytic analytic = new ServerPlayerCountAnalytic(instance, totalJavaPlayers, totalBedrockPlayers, totalPlayers);
-                    events.add(new RecordedAnalytic<>("server_player_count", start, analytic));
+                    events.add(new RecordedAnalytic<>("server_player_count", curTime, analytic));
                 }
             }
         }
