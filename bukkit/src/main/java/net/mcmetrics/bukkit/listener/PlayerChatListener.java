@@ -25,7 +25,7 @@ public class PlayerChatListener implements Listener {
             mcMetrics.getMcMetricsConfig().instance().id(),
             event.getPlayer().getUniqueId(),
                 event.getMessage(),
-                false, false, false, false, false
+                false
         ));
     }
 
