@@ -39,7 +39,7 @@ public class PlayerJoinListener {
 
     @Subscribe
     public void onJoin(PostLoginEvent event) {
-        TrackedPlayer trackedPlayer = mcMetrics.getSessionManager().addPlayer(event.getPlayer().getUniqueId());
+        TrackedPlayer trackedPlayer = mcMetrics.getSessionManager().getPlayer(event.getPlayer().getUniqueId());
         if  (trackedPlayer == null) {
             return;
         }

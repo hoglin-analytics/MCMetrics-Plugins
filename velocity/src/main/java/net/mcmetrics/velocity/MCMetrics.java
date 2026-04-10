@@ -133,6 +133,7 @@ public class MCMetrics {
     private void postSuccessfulReload() {
         this.proxyServer.getEventManager().register(this, new PlayerJoinListener(this));
         this.proxyServer.getEventManager().register(this, new PlayerQuitListener(this));
+        this.proxyServer.getEventManager().register(this, this);
     }
 
     public static MCMetrics getInstance() {
