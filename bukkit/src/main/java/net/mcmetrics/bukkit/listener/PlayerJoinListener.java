@@ -1,7 +1,9 @@
 package net.mcmetrics.bukkit.listener;
 
+import gg.hoglin.sdk.models.experiment.ExperimentData;
 import com.fasterxml.uuid.Generators;
 import net.mcmetrics.bukkit.MCMetrics;
+import net.mcmetrics.bukkit.experiment.ExperimentUtil;
 import net.mcmetrics.common.analytic.player.PlayerJoinAnalytic;
 import net.mcmetrics.common.platform.PlatformUtil;
 import net.mcmetrics.common.player.TrackedPlayer;
@@ -36,6 +38,18 @@ public class PlayerJoinListener implements Listener {
         player.setHostName(event.getHostname());
         player.setClientPlatform(PlatformUtil.getPlatform(uuid));
         player.setSessionStart(System.currentTimeMillis());
+
+        this.mcMetrics.getHoglin().addPlayerToExperimentCache(uuid);
+
+        // Fire experiments
+        if (!event.getPlayer().hasPlayedBefore()) {
+            this.mcMetrics.getHoglin().getExperiments().values().stream()
+                    .filter(data -> data.getEnabled() &&
+                            data.getTrigger() == ExperimentData.Trigger.FIRST_JOIN)
+                    .forEach(data -> {
+                        ExperimentUtil.triggerExperiment(this.mcMetrics.getHoglin(), data, event.getPlayer());
+                    });
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -55,6 +69,14 @@ public class PlayerJoinListener implements Listener {
         ));
 
         mcMetrics.getConnectionManager().pushPlayerCountUpdate();
+
+        // Fire experiments
+        this.mcMetrics.getHoglin().getExperiments().values().stream()
+                .filter(data -> data.getEnabled() &&
+                        data.getTrigger() == ExperimentData.Trigger.JOIN)
+                .forEach(data -> {
+                    ExperimentUtil.triggerExperiment(this.mcMetrics.getHoglin(), data, event.getPlayer());
+                });
     }
 
 }
