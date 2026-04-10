@@ -1,8 +1,8 @@
-package net.mcmetrics.bukkit.command;
+package net.mcmetrics.bungee.command;
 
-import net.mcmetrics.bukkit.MCMetrics;
+import net.mcmetrics.bungee.MCMetrics;
 import net.mcmetrics.common.analytic.player.PlayerPurchaseAnalytic;
-import org.bukkit.command.ConsoleCommandSender;
+import net.md_5.bungee.api.CommandSender;
 import org.incendo.cloud.annotation.specifier.Greedy;
 import org.incendo.cloud.annotation.specifier.Range;
 import org.incendo.cloud.annotations.Argument;
@@ -20,7 +20,7 @@ public class TrackPurchaseCommand {
     @Command("playertracker purchase <player_uuid> <purchase_value> <currency> <product_name>")
     @Permission("*")
     public void trackPurchase(
-        final ConsoleCommandSender sender,
+        final CommandSender sender,
         @Argument("player_uuid") final UUID playerUuid,
         @Argument("purchase_value") @Range(min = "0") final double purchaseValue,
         @Argument("currency") final String currency,
