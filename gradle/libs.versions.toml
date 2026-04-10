@@ -9,7 +9,7 @@ toml4j = "0.7.2"
 spigot-api = "1.21.11-R0.1-SNAPSHOT"
 lombok = "1.18.42"
 jetbrains-annotations = "26.0.2-1"
-hoglin = "1.2.0"
+hoglin = "1.2.1"
 cloud = "2.0.0"
 cloud-bukkit = "2.0.0-beta.14"
 cloud-paper = "2.0.0-beta.14"
@@ -38,4 +38,3 @@ cloud-velocity = { module = "org.incendo:cloud-velocity", version.ref = "cloud-v
 cloud-bungee = { module = "org.incendo:cloud-bungee", version.ref = "cloud-bungee" }
 uuid-generator = { module = "com.fasterxml.uuid:java-uuid-generator", version.ref = "uuid-generator" }
 velocity-api = { module = "com.velocitypowered:velocity-api", version.ref="velocity-api" }
-bungeecord-api = { module = "net.md-5:bungeecord-api", version.ref="bungeecord-api" }

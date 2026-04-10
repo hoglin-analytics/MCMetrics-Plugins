@@ -3,6 +3,7 @@ package net.mcmetrics.bukkit;
 import gg.hoglin.sdk.Hoglin;
 import lombok.AccessLevel;
 import lombok.Getter;
+import net.mcmetrics.bukkit.command.FlushCommand;
 import net.mcmetrics.bukkit.command.ReloadCommand;
 import net.mcmetrics.bukkit.command.TrackPurchaseCommand;
 import net.mcmetrics.bukkit.config.MCMetricsBukkitConfig;
@@ -107,6 +108,7 @@ public class MCMetrics extends JavaPlugin {
        final AnnotationParser<CommandSender> annotationParser = new AnnotationParser<>(manager, CommandSender.class);
        annotationParser.parse(new TrackPurchaseCommand());
        annotationParser.parse(new ReloadCommand());
+       annotationParser.parse(new FlushCommand());
    }
 
     public Hoglin getHoglin() {

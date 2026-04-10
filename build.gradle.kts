@@ -10,6 +10,7 @@ allprojects {
     version = "3.0.0"
 
     repositories {
+        mavenLocal() // For when I do local SDK development alongside plugin development
         mavenCentral()
         maven("https://hub.spigotmc.org/nexus/content/groups/public/")
         maven("https://maven.waypointstudios.com/releases/")
