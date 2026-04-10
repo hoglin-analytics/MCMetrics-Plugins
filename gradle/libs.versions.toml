@@ -13,12 +13,16 @@ hoglin = "1.2.0"
 cloud = "2.0.0"
 cloud-bukkit = "2.0.0-beta.14"
 cloud-paper = "2.0.0-beta.14"
+cloud-velocity = "2.0.0-beta.14"
+cloud-bungee = "2.0.0-beta.14"
 uuid-generator = "5.1.0"
 velocity-api = "3.5.0-SNAPSHOT"
+bungeecord-api = "1.21-R0.4"
 
 [plugins]
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 plugin-yml-bukkit = { id = "net.minecrell.plugin-yml.bukkit", version.ref = "plugin-yml" }
+plugin-yml-bungee = { id = "net.minecrell.plugin-yml.bungee", version.ref = "plugin-yml" }
 run-paper = { id = "xyz.jpenilla.run-paper", version.ref = "run-paper" }
 
 [libraries]
@@ -30,5 +34,8 @@ hoglin = { module = "gg.hoglin:sdk", version.ref = "hoglin" }
 cloud-core = { module = "org.incendo:cloud-core", version.ref = "cloud" }
 cloud-annotations = { module = "org.incendo:cloud-annotations", version.ref = "cloud" }
 cloud-paper = { module = "org.incendo:cloud-paper", version.ref = "cloud-paper" }
+cloud-velocity = { module = "org.incendo:cloud-velocity", version.ref = "cloud-velocity" }
+cloud-bungee = { module = "org.incendo:cloud-bungee", version.ref = "cloud-bungee" }
 uuid-generator = { module = "com.fasterxml.uuid:java-uuid-generator", version.ref = "uuid-generator" }
 velocity-api = { module = "com.velocitypowered:velocity-api", version.ref="velocity-api" }
+bungeecord-api = { module = "net.md-5:bungeecord-api", version.ref="bungeecord-api" }

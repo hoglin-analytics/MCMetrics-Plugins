@@ -1,8 +1,9 @@
-package net.mcmetrics.bukkit.command;
+package net.mcmetrics.velocity.command;
 
-import net.mcmetrics.bukkit.MCMetrics;
+import com.velocitypowered.api.command.CommandSource;
+import net.kyori.adventure.text.Component;
 import net.mcmetrics.common.analytic.player.PlayerPurchaseAnalytic;
-import org.bukkit.command.ConsoleCommandSender;
+import net.mcmetrics.velocity.MCMetrics;
 import org.incendo.cloud.annotation.specifier.Greedy;
 import org.incendo.cloud.annotation.specifier.Range;
 import org.incendo.cloud.annotations.Argument;
@@ -20,7 +21,7 @@ public class TrackPurchaseCommand {
     @Command("playertracker purchase <player_uuid> <purchase_value> <currency> <product_name>")
     @Permission("*")
     public void trackPurchase(
-        final ConsoleCommandSender sender,
+        final CommandSource sender,
         @Argument("player_uuid") final UUID playerUuid,
         @Argument("purchase_value") @Range(min = "0") final double purchaseValue,
         @Argument("currency") final String currency,
@@ -28,11 +29,11 @@ public class TrackPurchaseCommand {
     ) {
 
         if (!MCMetrics.getInstance().getHoglinLoader().isLoaded()) {
-            sender.sendMessage("§cAttempted to track a purchase whilst MCMetrics is correctly configured, this analytic will be lost. Please ensure the plugin is configured correctly.");
+            sender.sendMessage(Component.text("§cAttempted to track a purchase whilst MCMetrics is correctly configured, this analytic will be lost. Please ensure the plugin is configured correctly."));
             return;
         }
 
-        MCMetrics.getInstance().getHoglin().track(new PlayerPurchaseAnalytic(
+        MCMetrics.getInstance().getHoglinLoader().getHoglin().track(new PlayerPurchaseAnalytic(
             MCMetrics.getInstance().getMcMetricsConfig().instance().id(),
             playerUuid,
             productName,
