@@ -13,7 +13,7 @@ allprojects {
         mavenLocal() // For when I do local SDK development alongside plugin development
         mavenCentral()
         maven("https://hub.spigotmc.org/nexus/content/groups/public/")
-        maven("https://maven.waypointstudios.com/releases/")
+        maven("https://maven.hoglin.gg/releases/")
         maven("https://repo.papermc.io/repository/maven-public/")
     }
 }

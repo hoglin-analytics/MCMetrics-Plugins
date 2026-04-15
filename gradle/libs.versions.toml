@@ -38,3 +38,4 @@ cloud-velocity = { module = "org.incendo:cloud-velocity", version.ref = "cloud-v
 cloud-bungee = { module = "org.incendo:cloud-bungee", version.ref = "cloud-bungee" }
 uuid-generator = { module = "com.fasterxml.uuid:java-uuid-generator", version.ref = "uuid-generator" }
 velocity-api = { module = "com.velocitypowered:velocity-api", version.ref="velocity-api" }
+bungeecord-api = { module = "net.md-5:bungeecord-api", version.ref="bungeecord-api" }
