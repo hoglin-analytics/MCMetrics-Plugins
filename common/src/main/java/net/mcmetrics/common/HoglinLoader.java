@@ -27,16 +27,16 @@ public class HoglinLoader {
             return false;
         }
 
-        Hoglin.HoglinBuilder builder = Hoglin.builder(config.serverKey())
-            .autoFlushInterval(config.autoFlushInterval())
-            .maxBatchSize(config.autoFlushMaxBatchSize());
-
-        if (System.getProperty("hoglin.base.url") != null) {
-            builder = builder.baseUrl(System.getProperty("hoglin.base.url"));
-            System.out.println("Hoglin API URL overrided by environment variable: " + System.getProperty("hoglin.base.url"));
+        String apiServerUrl = "https://api.mcmetrics.net";
+        if (!config.apiServerUrl().isEmpty()) {
+            apiServerUrl = config.apiServerUrl().replaceAll("/+$", ""); // Trim trailing slashes, our api doesn't like them for some reason
         }
 
-        hoglin = builder.build();
+        hoglin = Hoglin.builder(config.serverKey())
+                .baseUrl(apiServerUrl)
+                .autoFlushInterval(config.autoFlushInterval())
+                .maxBatchSize(config.autoFlushMaxBatchSize())
+                .build();
 
         hoglin.evaluateExperiment("");
 

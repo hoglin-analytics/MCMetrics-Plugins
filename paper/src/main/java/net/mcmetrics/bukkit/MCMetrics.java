@@ -24,14 +24,6 @@ import org.incendo.cloud.bukkit.CloudBukkitCapabilities;
 import org.incendo.cloud.execution.ExecutionCoordinator;
 import org.incendo.cloud.paper.LegacyPaperCommandManager;
 
-import java.io.IOException;
-import java.net.Socket;
-import java.net.URI;
-import java.net.UnknownHostException;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-
 @Getter
 public class MCMetrics extends JavaPlugin {
 
@@ -49,7 +41,11 @@ public class MCMetrics extends JavaPlugin {
         setupCommands();
         attemptReload();
 
-        Bukkit.getScheduler().runTaskTimer(this, new ServerHeartbeatTask(), 0, 1200); // 1 minute interval
+        if (FoliaUtils.isFolia()) {
+            Bukkit.getServer().getGlobalRegionScheduler().runAtFixedRate(this, task -> new ServerHeartbeatTask().run(), 0, 1200);
+        } else {
+            Bukkit.getScheduler().runTaskTimer(this, new ServerHeartbeatTask(), 0, 1200); // 1 minute interval
+        }
     }
 
     @Override

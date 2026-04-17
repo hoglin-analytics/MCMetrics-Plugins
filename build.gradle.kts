@@ -7,7 +7,7 @@ plugins {
 
 allprojects {
     group = "net.mcmetrics"
-    version = "3.0.0"
+    version = "3.0.1"
 
     repositories {
         mavenLocal() // For when I do local SDK development alongside plugin development

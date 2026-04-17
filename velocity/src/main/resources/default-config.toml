@@ -1,4 +1,5 @@
 [hoglin]
+api_server = "https://api.mcmetrics.net" # The API server to use
 server_key = "" # Your server key can be found on the settings panel of your Hoglin server
 
 # An auto flush perioidcally pushes a batch of cached analytics from the server to Hoglin

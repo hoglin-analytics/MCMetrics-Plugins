@@ -1,20 +1,22 @@
 plugins {
-    alias(libs.plugins.plugin.yml.bukkit)
+    alias(libs.plugins.plugin.yml.paper)
     alias(libs.plugins.run.paper)
 }
 
 dependencies {
     implementation(project(":common"))
-    implementation(libs.spigot.api)
+    compileOnly(libs.paper.api)
+    compileOnly(libs.folia.api)
     implementation(libs.cloud.paper)
 }
 
-bukkit {
+paper {
     name = "MCMetrics"
     main = "net.mcmetrics.bukkit.MCMetrics"
     apiVersion = "1.21"
     website = "https://mcmetrics.net/"
     description = "Advanced analytics tracking for your Minecraft server."
+    foliaSupported = true
 }
 
 tasks.runServer {
