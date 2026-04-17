@@ -28,7 +28,7 @@ public class HoglinLoader {
         }
 
         String apiServerUrl = "https://api.mcmetrics.net";
-        if (!config.apiServerUrl().isEmpty()) {
+        if (config.apiServerUrl() != null && !config.apiServerUrl().isEmpty()) {
             apiServerUrl = config.apiServerUrl().replaceAll("/+$", ""); // Trim trailing slashes, our api doesn't like them for some reason
         }
 
