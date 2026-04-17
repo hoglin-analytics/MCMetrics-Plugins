@@ -5,7 +5,6 @@ plugins {
 
 dependencies {
     implementation(project(":common"))
-//    compileOnly(libs.paper.api)
     compileOnly(libs.folia.api)
     implementation(libs.cloud.paper)
 }
