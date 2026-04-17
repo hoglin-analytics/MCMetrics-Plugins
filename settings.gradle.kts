@@ -1,7 +1,7 @@
 rootProject.name = "MCMetrics"
 
 include("common")
-include("bukkit")
+include("paper")
 include("velocity")
 include("datagenerator")
 include("bungee")

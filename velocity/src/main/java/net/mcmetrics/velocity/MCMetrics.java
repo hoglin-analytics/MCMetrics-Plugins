@@ -35,11 +35,6 @@ import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-@Plugin(
-        id = "mcmetrics",
-        name = "MCMetrics",
-        version = "3.0.0"
-)
 @Getter
 public class MCMetrics {
 

@@ -15,4 +15,7 @@ public class HoglinConfig {
 
     @SerializedName("auto_flush_max_batch_size")
     private int autoFlushMaxBatchSize;
+
+    @SerializedName("api_server")
+    private String apiServerUrl;
 }

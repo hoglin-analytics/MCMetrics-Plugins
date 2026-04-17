@@ -1,0 +1,7 @@
+{
+  "id": "mcmetrics",
+  "name": "MCMetrics",
+  "version": "${version}",
+  "description": "Advanced analytics tracking for your Minecraft server.",
+  "main": "net.mcmetrics.velocity.MCMetrics"
+}

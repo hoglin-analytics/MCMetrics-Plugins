@@ -1,13 +1,13 @@
 package net.mcmetrics.common.player;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class SessionManager {
 
-    private final Map<UUID, TrackedPlayer> players = new HashMap<>();
+    private final Map<UUID, TrackedPlayer> players = new ConcurrentHashMap<>();
 
     public TrackedPlayer addPlayer(final UUID uuid) {
         final TrackedPlayer player = new TrackedPlayer();
