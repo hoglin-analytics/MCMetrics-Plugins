@@ -4,7 +4,7 @@ import gg.hoglin.sdk.models.analytic.NamedAnalytic;
 import gg.hoglin.sdk.models.analytic.RecordedAnalytic;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import net.mcmetrics.common.analytic.ServerPlayerCountAnalytic;
+import net.mcmetrics.common.analytic.server.ServerPlayerCountAnalytic;
 import net.mcmetrics.common.analytic.player.PlayerChatAnalytic;
 import net.mcmetrics.common.analytic.player.PlayerJoinAnalytic;
 import net.mcmetrics.common.analytic.player.PlayerPurchaseAnalytic;
@@ -14,7 +14,6 @@ import net.mcmetrics.common.platform.ClientPlatform;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static net.mcmetrics.datagenerator.Constants.*;
 import static net.mcmetrics.datagenerator.DataGenerator.EventType.*;
