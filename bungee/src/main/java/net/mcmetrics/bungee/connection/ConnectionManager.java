@@ -1,7 +1,7 @@
 package net.mcmetrics.bungee.connection;
 
 import net.mcmetrics.bungee.MCMetrics;
-import net.mcmetrics.common.analytic.ServerPlayerCountAnalytic;
+import net.mcmetrics.common.analytic.server.ServerPlayerCountAnalytic;
 import net.mcmetrics.common.player.TrackedPlayer;
 
 public class ConnectionManager {

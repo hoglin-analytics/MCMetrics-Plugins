@@ -1,6 +1,6 @@
 package net.mcmetrics.velocity.connection;
 
-import net.mcmetrics.common.analytic.ServerPlayerCountAnalytic;
+import net.mcmetrics.common.analytic.server.ServerPlayerCountAnalytic;
 import net.mcmetrics.common.player.TrackedPlayer;
 import net.mcmetrics.velocity.MCMetrics;
 
