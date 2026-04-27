@@ -13,6 +13,7 @@ public class ServerHeartbeatTask implements Runnable {
         }
 
         MCMetrics.getInstance().getConnectionManager().pushPlayerCountUpdate();
+        MCMetrics.getInstance().getConnectionManager().pushPerformanceUpdate();
     }
 
 }
