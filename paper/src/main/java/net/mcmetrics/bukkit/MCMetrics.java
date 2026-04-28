@@ -27,6 +27,9 @@ import org.incendo.cloud.paper.LegacyPaperCommandManager;
 @Getter
 public class MCMetrics extends JavaPlugin {
 
+    private static final long HEARTBEAT_INTERVAL_TICKS = 1200L;
+    private static final long FOLIA_INITIAL_HEARTBEAT_DELAY_TICKS = 1L;
+
     @Getter(AccessLevel.NONE)
     private final TomlConfigLoader<MCMetricsBukkitConfig> configLoader = new TomlConfigLoader<>(getDataFolder(), "config.toml", "default-config.toml", MCMetricsBukkitConfig.class);
 
@@ -42,9 +45,9 @@ public class MCMetrics extends JavaPlugin {
         attemptReload();
 
         if (FoliaUtils.isFolia()) {
-            Bukkit.getServer().getGlobalRegionScheduler().runAtFixedRate(this, task -> new ServerHeartbeatTask().run(), 0, 1200);
+            Bukkit.getServer().getGlobalRegionScheduler().runAtFixedRate(this, task -> new ServerHeartbeatTask().run(), FOLIA_INITIAL_HEARTBEAT_DELAY_TICKS, HEARTBEAT_INTERVAL_TICKS);
         } else {
-            Bukkit.getScheduler().runTaskTimer(this, new ServerHeartbeatTask(), 0, 1200); // 1 minute interval
+            Bukkit.getScheduler().runTaskTimer(this, new ServerHeartbeatTask(), 0L, HEARTBEAT_INTERVAL_TICKS); // 1 minute interval
         }
     }
 
