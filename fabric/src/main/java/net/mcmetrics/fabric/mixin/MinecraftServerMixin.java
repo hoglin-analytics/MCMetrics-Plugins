@@ -1,7 +1,7 @@
 package net.mcmetrics.fabric.mixin;
 
-import net.fabricmc.loader.impl.lib.sat4j.minisat.core.CircularBuffer;
 import net.mcmetrics.fabric.TpsUtils;
+import net.minecraft.Util;
 import net.minecraft.server.MinecraftServer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -17,12 +17,12 @@ public class MinecraftServerMixin {
 
     @Inject(method = "tickServer", at = @At("HEAD"))
     public void tickServerStart(CallbackInfo ci) {
-        startTime = System.nanoTime();
+        startTime = Util.getNanos();
     }
 
     @Inject(method = "tickServer", at = @At("RETURN"))
     public void tickServerEnd(CallbackInfo ci) {
-        long tickTime = System.nanoTime() - startTime;
+        double tickTime = (Util.getNanos() - startTime) / 1_000_000.0;
         TpsUtils.mspt.push(tickTime);
     }
 }

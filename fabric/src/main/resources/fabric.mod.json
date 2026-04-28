@@ -17,7 +17,7 @@
       "net.mcmetrics.fabric.MCMetrics"
     ]
   },
-  "mixin": [
+  "mixins": [
     {
       "config": "mcmetrics.mixins.json",
       "environment": "server"

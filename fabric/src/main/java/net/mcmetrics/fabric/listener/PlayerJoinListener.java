@@ -1,31 +1,29 @@
 package net.mcmetrics.fabric.listener;
 
-import com.fasterxml.uuid.Generators;
 import gg.hoglin.sdk.models.experiment.ExperimentData;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
-import net.fabricmc.fabric.api.networking.v1.ServerLoginConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.mcmetrics.common.analytic.player.PlayerJoinAnalytic;
-import net.mcmetrics.common.platform.PlatformUtil;
 import net.mcmetrics.common.player.TrackedPlayer;
+import net.mcmetrics.fabric.Listener;
 import net.mcmetrics.fabric.MCMetrics;
 import net.mcmetrics.fabric.experiment.ExperimentUtil;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
-import net.minecraft.server.network.ServerLoginPacketListenerImpl;
 import net.minecraft.stats.Stats;
 import org.apache.logging.log4j.Level;
 
-import java.util.UUID;
-
-public class PlayerJoinListener {
+public class PlayerJoinListener implements Listener {
 
     private final MCMetrics mcMetrics;
 
     public PlayerJoinListener(final MCMetrics mcMetrics) {
         this.mcMetrics = mcMetrics;
+    }
 
+    @Override
+    public void register() {
         ServerPlayConnectionEvents.JOIN.register(this::onJoin);
     }
 

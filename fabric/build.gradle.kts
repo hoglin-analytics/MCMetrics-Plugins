@@ -13,8 +13,8 @@ dependencies {
     modImplementation(libs.cloud.fabric)
     include(libs.cloud.fabric)
 
-    implementation(project(":common"))
-    include(project(":common"))
+    implementation(project(path = ":common", configuration = "shadow"))
+    include(project(path = ":common", configuration = "shadow"))
 }
 
 tasks.processResources {
@@ -24,10 +24,10 @@ tasks.processResources {
     }
 }
 
-tasks.remapJar {
-    archiveBaseName.set("MCMetrics-${project.name.uppercaseFirstChar()}")
+tasks.build {
+    dependsOn(tasks.remapJar)
 }
 
-tasks.shadowJar {
-    enabled = false
+tasks.remapJar {
+    archiveFileName.set("MCMetrics-${this.project.name.uppercaseFirstChar()}-${this.project.version}.jar")
 }

@@ -26,6 +26,7 @@ import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.execution.ExecutionCoordinator;
 import org.incendo.cloud.fabric.FabricServerCommandManager;
 
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -60,9 +61,12 @@ public class MCMetrics implements DedicatedServerModInitializer {
         attemptReload();
 
         // Probably a terrible way to register events
-        new PlayerChatListener(this);
-        new PlayerJoinListener(this);
-        new PlayerQuitListener(this);
+        List<Listener> listeners = List.of(
+                new PlayerChatListener(this),
+                new PlayerJoinListener(this),
+                new PlayerQuitListener(this)
+        );
+        listeners.forEach(Listener::register);
 
         executor.scheduleAtFixedRate(new ServerHeartbeatTask(), 0, 1, TimeUnit.MINUTES);
 

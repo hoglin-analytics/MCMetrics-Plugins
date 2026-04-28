@@ -8,7 +8,7 @@ import net.mcmetrics.common.player.TrackedPlayer;
 import net.mcmetrics.fabric.TpsUtils;
 
 import java.lang.management.ManagementFactory;
-import java.lang.management.OperatingSystemMXBean;
+import java.lang.management.ThreadMXBean;
 import java.nio.file.FileStore;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -16,13 +16,24 @@ import java.nio.file.Paths;
 public class ConnectionManager {
 
     private final MCMetrics mcMetrics;
-    private final OperatingSystemMXBean osBean;
+
+    private final ThreadMXBean threadMXBean;
+    private final FileStore fileStore;
     private final Runtime runtime;
 
+    private final long allocatedMemory;
+    private final long diskSize;
+
+    @SneakyThrows
     public ConnectionManager(final MCMetrics mcMetrics) {
         this.mcMetrics = mcMetrics;
-        this.osBean = ManagementFactory.getOperatingSystemMXBean();
+
+        this.threadMXBean = ManagementFactory.getThreadMXBean();
+        this.fileStore = Files.getFileStore(Paths.get("").toAbsolutePath());
+        this.diskSize = fileStore.getTotalSpace();
+
         this.runtime = Runtime.getRuntime();
+        this.allocatedMemory = this.runtime.maxMemory();
     }
 
     // Gonna leave this untouched even though Fabric doesn't allow for Bedrock anyway
@@ -47,18 +58,22 @@ public class ConnectionManager {
 
     @SneakyThrows
     public void pushPerformanceUpdate() {
+        // TPS & MSPT
         double tps = TpsUtils.getTps();
         double mspt = TpsUtils.getMspt();
-        double cpuUsage = osBean.getSystemLoadAverage();
-        double memUsage = runtime.totalMemory() - runtime.freeMemory();
 
-        FileStore fileStore = Files.getFileStore(Paths.get("/"));
-        double diskUsage = fileStore.getTotalSpace() - fileStore.getUnallocatedSpace();
+        // CPU, Memory, Disk
+        long cpuTime = this.threadMXBean.getCurrentThreadCpuTime();
+        long memUsage = this.allocatedMemory - runtime.freeMemory();
+        long diskUsage = this.diskSize - this.fileStore.getUsableSpace();
+
 
         mcMetrics.getHoglin().track(new ServerPerformanceAnalytic(
-                cpuUsage,
+                cpuTime,
                 memUsage,
+                this.allocatedMemory,
                 diskUsage,
+                this.diskSize,
                 tps,
                 mspt
         ));
