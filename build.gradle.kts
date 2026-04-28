@@ -16,6 +16,7 @@ allprojects {
         maven("https://hub.spigotmc.org/nexus/content/groups/public/")
         maven("https://maven.hoglin.gg/releases/")
         maven("https://repo.papermc.io/repository/maven-public/")
+        maven("https://maven.fabricmc.net/")
     }
 }
 
@@ -39,7 +40,7 @@ subprojects {
     }
 }
 
-val pluginProjectNames = listOf("paper", "bungee", "velocity")
+val pluginProjectNames = listOf("paper", "bungee", "velocity", "fabric")
 val pluginProjects = subprojects.filter { it.name in pluginProjectNames }
 
 tasks.register("copyBuiltJars") {
