@@ -1,68 +1,48 @@
 package net.mcmetrics.fabric.listener;
 
-import gg.hoglin.sdk.models.experiment.ExperimentData;
+import com.mojang.authlib.GameProfile;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
-import net.mcmetrics.common.analytic.player.PlayerJoinAnalytic;
-import net.mcmetrics.common.player.TrackedPlayer;
+import net.mcmetrics.common.MCMetrics;
+import net.mcmetrics.common.listener.PlayerJoinHandler;
 import net.mcmetrics.fabric.Listener;
-import net.mcmetrics.fabric.MCMetrics;
-import net.mcmetrics.fabric.experiment.ExperimentUtil;
+import net.mcmetrics.fabric.event.PlayerLoginCallback;
+import net.minecraft.network.Connection;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.stats.Stats;
-import org.apache.logging.log4j.Level;
+
+import java.util.UUID;
 
 public class PlayerJoinListener implements Listener {
 
-    private final MCMetrics mcMetrics;
+    private final PlayerJoinHandler playerJoinHandler;
 
-    public PlayerJoinListener(final MCMetrics mcMetrics) {
-        this.mcMetrics = mcMetrics;
+    public PlayerJoinListener(MCMetrics mcMetrics) {
+        this.playerJoinHandler = new PlayerJoinHandler(mcMetrics);
     }
 
     @Override
     public void register() {
+        PlayerLoginCallback.EVENT.register(this::onLogin);
         ServerPlayConnectionEvents.JOIN.register(this::onJoin);
+    }
+
+    public void onLogin(GameProfile gameProfile, Connection connection, String hostName) {
+        UUID uuid = gameProfile.getId();
+        String ipAddress = connection.getRemoteAddress().toString();
+        this.playerJoinHandler.onLogin(uuid, ipAddress, hostName);
     }
 
     public void onJoin(ServerGamePacketListenerImpl packet, PacketSender sender, MinecraftServer server) {
         ServerPlayer player = packet.getPlayer();
         int playTime = player.getStats().getValue(Stats.CUSTOM.get(Stats.PLAY_TIME));
+
+        String playerName = player.getName().getString();
+        UUID uuid = player.getGameProfile().getId();
         boolean isNewPlayer = playTime == 0;
 
-        final TrackedPlayer trackedPlayer = mcMetrics.getSessionManager().getPlayer(player.getUUID());
-        if (trackedPlayer == null) {
-            mcMetrics.getLogger().log(Level.FATAL, "TrackedPlayer not found for UUID: " + player.getUUID());
-            return;
-        }
-
-        mcMetrics.getHoglin().track(new PlayerJoinAnalytic(
-            mcMetrics.getMcMetricsConfig().instance().id(),
-            trackedPlayer.getSessionId(),
-            player.getUUID(),
-            trackedPlayer,
-            isNewPlayer
-        ));
-
-        mcMetrics.getConnectionManager().pushPlayerCountUpdate();
-
-        // Fire experiments
-        if (isNewPlayer) {
-            this.mcMetrics.getHoglin().getExperiments().values().stream()
-                    .filter(data -> data.getEnabled() &&
-                            data.getTrigger() == ExperimentData.Trigger.FIRST_JOIN)
-                    .forEach(data -> {
-                        ExperimentUtil.triggerExperiment(this.mcMetrics.getHoglin(), data, player);
-                    });
-        }
-        this.mcMetrics.getHoglin().getExperiments().values().stream()
-                .filter(data -> data.getEnabled() &&
-                        data.getTrigger() == ExperimentData.Trigger.JOIN)
-                .forEach(data -> {
-                    ExperimentUtil.triggerExperiment(this.mcMetrics.getHoglin(), data, player);
-                });
+        this.playerJoinHandler.onJoin(playerName, uuid, isNewPlayer);
     }
-
 }

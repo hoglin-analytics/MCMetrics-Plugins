@@ -14,7 +14,7 @@
   "environment": "server",
   "entrypoints": {
     "server": [
-      "net.mcmetrics.fabric.MCMetrics"
+      "net.mcmetrics.fabric.MCMetricsMod"
     ]
   },
   "mixins": [

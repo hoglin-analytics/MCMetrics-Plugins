@@ -1,12 +1,8 @@
 package net.mcmetrics.bukkit.listener;
 
-import gg.hoglin.sdk.models.experiment.ExperimentData;
-import com.fasterxml.uuid.Generators;
-import net.mcmetrics.bukkit.MCMetrics;
-import net.mcmetrics.bukkit.experiment.ExperimentUtil;
-import net.mcmetrics.common.analytic.player.PlayerJoinAnalytic;
-import net.mcmetrics.common.platform.PlatformUtil;
-import net.mcmetrics.common.player.TrackedPlayer;
+import net.mcmetrics.common.MCMetrics;
+import net.mcmetrics.common.listener.PlayerJoinHandler;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -17,10 +13,10 @@ import java.util.UUID;
 
 public class PlayerJoinListener implements Listener {
 
-    private final MCMetrics mcMetrics;
+    private final PlayerJoinHandler playerJoinHandler;
 
     public PlayerJoinListener(final MCMetrics mcMetrics) {
-        this.mcMetrics = mcMetrics;
+        this.playerJoinHandler = new PlayerJoinHandler(mcMetrics);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -30,53 +26,15 @@ public class PlayerJoinListener implements Listener {
         }
 
         final UUID uuid = event.getPlayer().getUniqueId();
-        final TrackedPlayer player = mcMetrics.getSessionManager().addPlayer(uuid);
-        final UUID sessionId = Generators.timeBasedGenerator().generate();
+        final String ipAddress = event.getAddress().getHostAddress();
+        final String hostName = event.getHostname();
 
-        player.setSessionId(sessionId.toString());
-        player.setIp(event.getAddress().getHostAddress());
-        player.setHostName(event.getHostname());
-        player.setClientPlatform(PlatformUtil.getPlatform(uuid));
-        player.setSessionStart(System.currentTimeMillis());
-
-        this.mcMetrics.getHoglin().addPlayerToExperimentCache(uuid);
-
-        // Fire experiments
-        if (!event.getPlayer().hasPlayedBefore()) {
-            this.mcMetrics.getHoglin().getExperiments().values().stream()
-                    .filter(data -> data.getEnabled() &&
-                            data.getTrigger() == ExperimentData.Trigger.FIRST_JOIN)
-                    .forEach(data -> {
-                        ExperimentUtil.triggerExperiment(this.mcMetrics.getHoglin(), data, event.getPlayer());
-                    });
-        }
+        this.playerJoinHandler.onLogin(uuid, ipAddress, hostName);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onJoin(final PlayerJoinEvent event) {
-        final TrackedPlayer trackedPlayer = mcMetrics.getSessionManager().getPlayer(event.getPlayer().getUniqueId());
-        if (trackedPlayer == null) {
-            mcMetrics.getLogger().severe("TrackedPlayer not found for UUID: " + event.getPlayer().getUniqueId());
-            return;
-        }
-
-        mcMetrics.getHoglin().track(new PlayerJoinAnalytic(
-            mcMetrics.getMcMetricsConfig().instance().id(),
-            trackedPlayer.getSessionId(),
-            event.getPlayer().getUniqueId(),
-            trackedPlayer,
-            !event.getPlayer().hasPlayedBefore()
-        ));
-
-        mcMetrics.getConnectionManager().pushPlayerCountUpdate();
-
-        // Fire experiments
-        this.mcMetrics.getHoglin().getExperiments().values().stream()
-                .filter(data -> data.getEnabled() &&
-                        data.getTrigger() == ExperimentData.Trigger.JOIN)
-                .forEach(data -> {
-                    ExperimentUtil.triggerExperiment(this.mcMetrics.getHoglin(), data, event.getPlayer());
-                });
+        Player player = event.getPlayer();
+        playerJoinHandler.onJoin(player.getName(), player.getUniqueId(), !player.hasPlayedBefore());
     }
-
 }

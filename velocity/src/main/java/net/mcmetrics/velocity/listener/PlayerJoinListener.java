@@ -1,22 +1,20 @@
 package net.mcmetrics.velocity.listener;
 
-import com.fasterxml.uuid.Generators;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.PostLoginEvent;
 import com.velocitypowered.api.event.connection.PreLoginEvent;
-import net.mcmetrics.common.analytic.player.PlayerJoinAnalytic;
-import net.mcmetrics.common.platform.PlatformUtil;
-import net.mcmetrics.common.player.TrackedPlayer;
-import net.mcmetrics.velocity.MCMetrics;
+import net.mcmetrics.common.MCMetrics;
+import net.mcmetrics.common.listener.PlayerJoinHandler;
+import net.mcmetrics.velocity.MCMetricsPlugin;
 
 import java.util.UUID;
 
 public class PlayerJoinListener {
 
-    private final MCMetrics mcMetrics;
+    private final PlayerJoinHandler playerJoinHandler;
 
     public PlayerJoinListener(MCMetrics mcMetrics) {
-        this.mcMetrics = mcMetrics;
+        this.playerJoinHandler = new PlayerJoinHandler(mcMetrics);
     }
 
     @Subscribe
@@ -25,33 +23,19 @@ public class PlayerJoinListener {
             return;
         }
 
-        UUID uuid = event.getUniqueId();
-        TrackedPlayer player = mcMetrics.getSessionManager().addPlayer(uuid);
-        UUID sessionId = Generators.timeBasedGenerator().generate();
+        UUID playerUUID = event.getUniqueId();
+        String ipAddress = event.getConnection().getRemoteAddress().getAddress().getHostAddress();
+        String hostName = event.getConnection().getVirtualHost().orElse(MCMetricsPlugin.getInstance().getProxyServer().getBoundAddress()).getHostString();
 
-        player.setSessionId(sessionId.toString());
-        player.setIp(event.getConnection().getRemoteAddress().getAddress().getHostAddress());
-        // TODO: double check to see if this consistently returns or if we have to handle the optional properly
-        player.setHostName(event.getConnection().getVirtualHost().get().getHostName());
-        player.setClientPlatform(PlatformUtil.getPlatform(uuid));
-        player.setSessionStart(System.currentTimeMillis());
+        this.playerJoinHandler.onLogin(playerUUID, ipAddress, hostName);
     }
 
     @Subscribe
     public void onJoin(PostLoginEvent event) {
-        TrackedPlayer trackedPlayer = mcMetrics.getSessionManager().getPlayer(event.getPlayer().getUniqueId());
-        if  (trackedPlayer == null) {
-            return;
-        }
+        String playerName = event.getPlayer().getUsername();
+        UUID playerUUID = event.getPlayer().getUniqueId();
 
-        mcMetrics.getHoglinLoader().getHoglin().track(new PlayerJoinAnalytic(
-                mcMetrics.getMcMetricsConfig().instance().id(),
-                trackedPlayer.getSessionId(),
-                event.getPlayer().getUniqueId(),
-                trackedPlayer,
-                false  // Velocity doesn't store this
-        ));
-
-        mcMetrics.getConnectionManager().pushPlayerCountUpdate();
+        // Velocity doesn't track new players, maybe we write our own solution to this later?
+        this.playerJoinHandler.onJoin(playerName, playerUUID, false);
     }
 }

@@ -1,7 +1,8 @@
 package net.mcmetrics.bukkit.listener;
 
-import net.mcmetrics.bukkit.MCMetrics;
+import net.mcmetrics.common.MCMetrics;
 import net.mcmetrics.common.analytic.player.PlayerChatAnalytic;
+import net.mcmetrics.common.listener.PlayerChatHandler;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -9,10 +10,10 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class PlayerChatListener implements Listener {
 
-    private final MCMetrics mcMetrics;
+    private final PlayerChatHandler playerChatHandler;
 
     public PlayerChatListener(final MCMetrics mcMetrics) {
-        this.mcMetrics = mcMetrics;
+        this.playerChatHandler = new PlayerChatHandler(mcMetrics);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -21,12 +22,6 @@ public class PlayerChatListener implements Listener {
             return;
         }
 
-        mcMetrics.getHoglin().track(new PlayerChatAnalytic(
-            mcMetrics.getMcMetricsConfig().instance().id(),
-            event.getPlayer().getUniqueId(),
-                event.getMessage(),
-                false
-        ));
+        this.playerChatHandler.onChat(event.getPlayer().getUniqueId(), event.getMessage());
     }
-
 }

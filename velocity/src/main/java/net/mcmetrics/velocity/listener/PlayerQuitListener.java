@@ -2,41 +2,22 @@ package net.mcmetrics.velocity.listener;
 
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
-import net.mcmetrics.common.analytic.player.PlayerQuitAnalytic;
-import net.mcmetrics.common.player.TrackedPlayer;
-import net.mcmetrics.velocity.MCMetrics;
+import net.mcmetrics.common.MCMetrics;
+import net.mcmetrics.common.listener.PlayerQuitHandler;
 
 import java.util.UUID;
 
 public class PlayerQuitListener {
 
-    private final MCMetrics mcMetrics;
+    private final PlayerQuitHandler playerQuitHandler;
 
     public PlayerQuitListener(MCMetrics mcMetrics) {
-        this.mcMetrics = mcMetrics;
+        this.playerQuitHandler = new PlayerQuitHandler(mcMetrics);
     }
 
     @Subscribe
     public void onPlayerQuit(DisconnectEvent event) {
-        UUID uuid = event.getPlayer().getUniqueId();
-        TrackedPlayer trackedPlayer = this.mcMetrics.getSessionManager().getPlayer(uuid);
-        if (trackedPlayer == null) {
-            return;
-        }
-
-        long sessionTime = System.currentTimeMillis() - trackedPlayer.getSessionStart();
-
-        mcMetrics.getHoglinLoader().getHoglin().track(new PlayerQuitAnalytic(
-                mcMetrics.getMcMetricsConfig().instance().id(),
-                trackedPlayer.getSessionId(),
-                uuid,
-                trackedPlayer.getHostName(),
-                trackedPlayer.getIp(),
-                trackedPlayer.getClientPlatform(),
-                sessionTime
-        ));
-
-        mcMetrics.getSessionManager().removePlayer(uuid);
-        mcMetrics.getConnectionManager().pushPlayerCountUpdate();
+        UUID playerUUID = event.getPlayer().getUniqueId();
+        this.playerQuitHandler.onQuit(playerUUID);
     }
 }

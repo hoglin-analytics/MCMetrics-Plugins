@@ -1,10 +1,7 @@
 package net.mcmetrics.bungee.listener;
 
-import com.fasterxml.uuid.Generators;
-import net.mcmetrics.bungee.MCMetrics;
-import net.mcmetrics.common.analytic.player.PlayerJoinAnalytic;
-import net.mcmetrics.common.platform.PlatformUtil;
-import net.mcmetrics.common.player.TrackedPlayer;
+import net.mcmetrics.common.MCMetrics;
+import net.mcmetrics.common.listener.PlayerJoinHandler;
 import net.md_5.bungee.api.event.LoginEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -15,10 +12,10 @@ import java.util.UUID;
 
 public class PlayerJoinListener implements Listener {
 
-    private final MCMetrics mcMetrics;
+    private final PlayerJoinHandler  playerJoinHandler;
 
-    public PlayerJoinListener(final MCMetrics mcMetrics) {
-        this.mcMetrics = mcMetrics;
+    public PlayerJoinListener(MCMetrics mcMetrics) {
+        this.playerJoinHandler = new PlayerJoinHandler(mcMetrics);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -28,33 +25,18 @@ public class PlayerJoinListener implements Listener {
         }
 
         final UUID uuid = event.getConnection().getUniqueId();
-        final TrackedPlayer player = mcMetrics.getSessionManager().addPlayer(uuid);
-        final UUID sessionId = Generators.timeBasedGenerator().generate();
+        final String ipAddress = event.getConnection().getAddress().getAddress().getHostAddress();
+        final String hostName = event.getConnection().getVirtualHost().getHostName();
 
-        player.setSessionId(sessionId.toString());
-        player.setIp(event.getConnection().getAddress().getAddress().getHostAddress());
-        player.setHostName(event.getConnection().getVirtualHost().getHostName());
-        player.setClientPlatform(PlatformUtil.getPlatform(uuid));
-        player.setSessionStart(System.currentTimeMillis());
+        this.playerJoinHandler.onLogin(uuid, ipAddress, hostName);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(final PostLoginEvent event) {
-        final TrackedPlayer trackedPlayer = mcMetrics.getSessionManager().getPlayer(event.getPlayer().getUniqueId());
-        if (trackedPlayer == null) {
-            mcMetrics.getLogger().severe("TrackedPlayer not found for UUID: " + event.getPlayer().getUniqueId());
-            return;
-        }
+        String playerName = event.getPlayer().getName();
+        UUID uuid = event.getPlayer().getUniqueId();
 
-        mcMetrics.getHoglin().track(new PlayerJoinAnalytic(
-            mcMetrics.getMcMetricsConfig().instance().id(),
-            trackedPlayer.getSessionId(),
-            event.getPlayer().getUniqueId(),
-            trackedPlayer,
-            false
-        ));
-
-        mcMetrics.getConnectionManager().pushPlayerCountUpdate();
+        // Bungee doesn't have a way to check new players, maybe we implement our own solution
+        this.playerJoinHandler.onJoin(playerName, uuid, false);
     }
-
 }
