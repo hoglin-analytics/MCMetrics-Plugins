@@ -44,8 +44,9 @@ public class MCMetricsMod implements DedicatedServerModInitializer {
                 TpsUtils::getTps,
                 TpsUtils::getMspt,
                 null,
-                () -> {}, // Leave this empty, because I have zero clue how fabric unregisters listeners
-                () -> {}
+                (j, q, c) -> {}, // Leave this empty, because I have zero clue how fabric unregisters listeners
+                () -> {},
+                false
         );
 
         // Probably a terrible way to register events

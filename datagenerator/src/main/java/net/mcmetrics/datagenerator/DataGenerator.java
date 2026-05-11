@@ -111,7 +111,9 @@ public class DataGenerator {
                             hostname,
                             ip,
                             isJava ? ClientPlatform.JAVA : ClientPlatform.BEDROCK,
-                            isNew);
+                            isNew,
+                            false
+                    );
                     events.add(new RecordedAnalytic<>("player_join", curTime, analytic));
                 } else {
                     // Player quiting
@@ -127,7 +129,8 @@ public class DataGenerator {
                             playerSession.hostname,
                             playerSession.ip,
                             playerSession.isJava ? ClientPlatform.JAVA : ClientPlatform.BEDROCK,
-                            (t - playerSession.startTime) * 60 * 1000
+                            (t - playerSession.startTime) * 60 * 1000,
+                            false
                     );
                     events.add(new RecordedAnalytic<>("player_quit", curTime, analytic));
                 }

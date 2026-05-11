@@ -12,8 +12,8 @@ public class PlayerChatListener implements Listener {
 
     private final PlayerChatHandler playerChatHandler;
 
-    public PlayerChatListener(final MCMetrics mcMetrics) {
-        this.playerChatHandler = new PlayerChatHandler(mcMetrics);
+    public PlayerChatListener(final PlayerChatHandler playerChatHandler) {
+        this.playerChatHandler = playerChatHandler;
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

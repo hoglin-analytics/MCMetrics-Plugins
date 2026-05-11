@@ -3,7 +3,6 @@ package net.mcmetrics.common;
 import gg.hoglin.sdk.Hoglin;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
 import net.mcmetrics.common.command.PlatformCommandManager;
 import net.mcmetrics.common.command.ReloadCommand;
 import net.mcmetrics.common.command.TrackPurchaseCommand;
@@ -12,8 +11,12 @@ import net.mcmetrics.common.config.MCMetricsConfig;
 import net.mcmetrics.common.connection.ConnectionManager;
 import net.mcmetrics.common.experiment.ExperimentManager;
 import net.mcmetrics.common.experiment.ExperimentRunner;
+import net.mcmetrics.common.listener.PlayerChatHandler;
+import net.mcmetrics.common.listener.PlayerJoinHandler;
+import net.mcmetrics.common.listener.PlayerQuitHandler;
 import net.mcmetrics.common.player.SessionManager;
 import net.mcmetrics.common.task.ServerHeartbeatTask;
+import net.mcmetrics.common.util.TriConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,8 +31,10 @@ public class MCMetrics {
     private final File configDir;
     private final Supplier<Double> tpsSupplier;
     private final Supplier<Double> msptSupplier;
-    private final Runnable registerEvents;
+    private final TriConsumer<PlayerJoinHandler, PlayerQuitHandler, PlayerChatHandler> registerEvents;
     private final Runnable unregisterEvents;
+
+    private final boolean isProxy;
 
     private ExperimentManager experimentManager;
 
@@ -50,8 +55,9 @@ public class MCMetrics {
             Supplier<Double> tpsSupplier,
             Supplier<Double> msptSupplier,
             ExperimentRunner experimentRunner,
-            Runnable registerEvents,
-            Runnable unregisterEvents
+            TriConsumer<PlayerJoinHandler, PlayerQuitHandler, PlayerChatHandler> registerEvents,
+            Runnable unregisterEvents,
+            boolean isProxy
     ) {
         this.commandManager = commandManager;
         this.configDir = configDir;
@@ -59,6 +65,7 @@ public class MCMetrics {
         this.msptSupplier = msptSupplier;
         this.registerEvents = registerEvents;
         this.unregisterEvents = unregisterEvents;
+        this.isProxy = isProxy;
 
         if (experimentRunner != null)
             this.experimentManager = new ExperimentManager(experimentRunner);
@@ -118,7 +125,7 @@ public class MCMetrics {
             return false;
         }
 
-        registerEvents.run();
+        registerEvents.accept(new PlayerJoinHandler(this), new PlayerQuitHandler(this), new PlayerChatHandler(this));
 
         return true;
     }

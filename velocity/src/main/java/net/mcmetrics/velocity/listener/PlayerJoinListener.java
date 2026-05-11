@@ -13,8 +13,8 @@ public class PlayerJoinListener {
 
     private final PlayerJoinHandler playerJoinHandler;
 
-    public PlayerJoinListener(MCMetrics mcMetrics) {
-        this.playerJoinHandler = new PlayerJoinHandler(mcMetrics);
+    public PlayerJoinListener(final PlayerJoinHandler playerJoinHandler) {
+        this.playerJoinHandler = playerJoinHandler;
     }
 
     @Subscribe

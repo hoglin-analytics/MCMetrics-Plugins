@@ -30,7 +30,8 @@ public class PlayerQuitHandler {
                 trackedPlayer.getHostName(),
                 trackedPlayer.getIp(),
                 trackedPlayer.getClientPlatform(),
-                sessionTime
+                sessionTime,
+                mcMetrics.isProxy()
         ));
 
         mcMetrics.getSessionManager().removePlayer(playerUUID);

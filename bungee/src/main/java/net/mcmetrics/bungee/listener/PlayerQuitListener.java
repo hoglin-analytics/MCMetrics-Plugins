@@ -12,8 +12,8 @@ public class PlayerQuitListener implements Listener {
 
     private final PlayerQuitHandler playerQuitHandler;
 
-    public PlayerQuitListener(MCMetrics mcMetrics) {
-        this.playerQuitHandler = new PlayerQuitHandler(mcMetrics);
+    public PlayerQuitListener(final PlayerQuitHandler playerQuitHandler) {
+        this.playerQuitHandler = playerQuitHandler;
     }
 
     @EventHandler

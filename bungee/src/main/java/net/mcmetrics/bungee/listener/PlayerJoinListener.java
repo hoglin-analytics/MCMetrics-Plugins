@@ -12,10 +12,10 @@ import java.util.UUID;
 
 public class PlayerJoinListener implements Listener {
 
-    private final PlayerJoinHandler  playerJoinHandler;
+    private final PlayerJoinHandler playerJoinHandler;
 
-    public PlayerJoinListener(MCMetrics mcMetrics) {
-        this.playerJoinHandler = new PlayerJoinHandler(mcMetrics);
+    public PlayerJoinListener(final PlayerJoinHandler playerJoinHandler) {
+        this.playerJoinHandler = playerJoinHandler;
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

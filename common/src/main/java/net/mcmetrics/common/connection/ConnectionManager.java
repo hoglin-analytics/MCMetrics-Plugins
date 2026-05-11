@@ -72,6 +72,7 @@ public class ConnectionManager {
         long diskUsage = this.diskSize - this.fileStore.getUsableSpace();
 
         mcMetrics.getHoglin().track(new ServerPerformanceAnalytic(
+                mcMetrics.getConfig().instance().id(),
                 cpuTime,
                 memUsage,
                 this.allocatedMemory,

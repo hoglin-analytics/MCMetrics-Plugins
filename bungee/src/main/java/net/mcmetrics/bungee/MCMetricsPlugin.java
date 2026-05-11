@@ -7,6 +7,9 @@ import net.mcmetrics.bungee.listener.PlayerJoinListener;
 import net.mcmetrics.bungee.listener.PlayerQuitListener;
 import net.mcmetrics.common.MCMetrics;
 import net.mcmetrics.common.command.PlatformCommandManager;
+import net.mcmetrics.common.listener.PlayerChatHandler;
+import net.mcmetrics.common.listener.PlayerJoinHandler;
+import net.mcmetrics.common.listener.PlayerQuitHandler;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.util.concurrent.TimeUnit;
@@ -34,7 +37,8 @@ public class MCMetricsPlugin extends Plugin {
                 () -> -1.0,
                 new BungeeExperimentRunner(),
                 this::registerListeners,
-                this::unregisterListeners
+                this::unregisterListeners,
+                true
         );
 
         getProxy().getScheduler().schedule(this, mcMetrics.newServerHeartbeatTask(), 0, HEARTBEAT_INTERVAL_TIME, HEARTBEAT_INTERVAL_UNITS);
@@ -46,9 +50,9 @@ public class MCMetricsPlugin extends Plugin {
         this.mcMetrics.shutdown();
     }
 
-    private void registerListeners() {
-        getProxy().getPluginManager().registerListener(this, new PlayerJoinListener(mcMetrics));
-        getProxy().getPluginManager().registerListener(this, new PlayerQuitListener(mcMetrics));
+    private void registerListeners(PlayerJoinHandler joinHandler, PlayerQuitHandler quitHandler, PlayerChatHandler ignored) {
+        getProxy().getPluginManager().registerListener(this, new PlayerJoinListener(joinHandler));
+        getProxy().getPluginManager().registerListener(this, new PlayerQuitListener(quitHandler));
     }
 
     private void unregisterListeners() {

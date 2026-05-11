@@ -11,6 +11,9 @@ import com.velocitypowered.api.scheduler.ScheduledTask;
 import lombok.Getter;
 import net.mcmetrics.common.MCMetrics;
 import net.mcmetrics.common.command.PlatformCommandManager;
+import net.mcmetrics.common.listener.PlayerChatHandler;
+import net.mcmetrics.common.listener.PlayerJoinHandler;
+import net.mcmetrics.common.listener.PlayerQuitHandler;
 import net.mcmetrics.velocity.command.VelocityPlatformCommandManager;
 import net.mcmetrics.velocity.experiment.VelocityExperimentRunner;
 import net.mcmetrics.velocity.listener.PlayerJoinListener;
@@ -51,7 +54,8 @@ public class MCMetricsPlugin {
                 () -> -1.0,
                 new VelocityExperimentRunner(proxyServer),
                 this::registerEvents,
-                this::unregisterEvents
+                this::unregisterEvents,
+                true
         );
 
 
@@ -59,10 +63,9 @@ public class MCMetricsPlugin {
                 .repeat(HEARTBEAT_INTERVAL_TIME, HEARTBEAT_INTERVAL_UNITS).schedule();
     }
 
-    private void registerEvents() {
-        this.proxyServer.getEventManager().register(this, new PlayerJoinListener(mcMetrics));
-        this.proxyServer.getEventManager().register(this, new PlayerQuitListener(mcMetrics));
-        this.proxyServer.getEventManager().register(this, this);
+    private void registerEvents(PlayerJoinHandler joinHandler, PlayerQuitHandler quitHandler, PlayerChatHandler ignored) {
+        this.proxyServer.getEventManager().register(this, new PlayerJoinListener(joinHandler));
+        this.proxyServer.getEventManager().register(this, new PlayerQuitListener(quitHandler));
     }
 
     private void unregisterEvents() {

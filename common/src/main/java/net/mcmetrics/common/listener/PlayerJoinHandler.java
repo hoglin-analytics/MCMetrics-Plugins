@@ -42,7 +42,8 @@ public class PlayerJoinHandler {
                 trackedPlayer.getSessionId(),
                 playerUUID,
                 trackedPlayer,
-                isNewPlayer
+                isNewPlayer,
+                mcMetrics.isProxy()
         ));
 
         mcMetrics.getConnectionManager().pushPlayerCountUpdate();
