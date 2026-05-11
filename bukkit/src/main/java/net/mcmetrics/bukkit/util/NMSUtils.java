@@ -94,7 +94,7 @@ public class NMSUtils {
             try {
                 Object server = MINECRAFT_SERVER_GET_SERVER.invoke(null);
                 double[] recentTps = (double[]) MINECRAFT_SERVER_RECENT_TPS.get(server);
-                return recentTps[0];
+                return Math.min(20.0, recentTps[0]);
             } catch (InvocationTargetException | IllegalAccessException e) {
                 LOGGER.log(Level.SEVERE, "Failed to get recent TPS", e);
                 return -1.0;
