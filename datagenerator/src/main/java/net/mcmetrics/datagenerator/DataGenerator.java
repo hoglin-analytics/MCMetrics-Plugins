@@ -172,7 +172,7 @@ public class DataGenerator {
                     int totalPlayers = uuids.size();
                     int totalJavaPlayers = javaPlayers.stream().filter(uuids::contains).toList().size();
                     int totalBedrockPlayers = totalPlayers - totalJavaPlayers;
-                    ServerPlayerCountAnalytic analytic = new ServerPlayerCountAnalytic(instance, totalJavaPlayers, totalBedrockPlayers, totalPlayers);
+                    ServerPlayerCountAnalytic analytic = new ServerPlayerCountAnalytic(instance, totalJavaPlayers, totalBedrockPlayers, totalPlayers, false);
                     events.add(new RecordedAnalytic<>("server_player_count", curTime, analytic));
                 }
             }

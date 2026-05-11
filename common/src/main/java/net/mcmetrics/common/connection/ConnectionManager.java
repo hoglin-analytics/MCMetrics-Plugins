@@ -58,7 +58,8 @@ public class ConnectionManager {
             mcMetrics.getConfig().instance().id(),
             javaCount,
             bedrockCount,
-            javaCount + bedrockCount
+            javaCount + bedrockCount,
+            mcMetrics.isProxy()
         ));
     }
 
