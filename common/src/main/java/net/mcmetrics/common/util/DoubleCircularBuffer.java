@@ -1,4 +1,4 @@
-package net.mcmetrics.fabric;
+package net.mcmetrics.common.util;
 
 import lombok.Getter;
 

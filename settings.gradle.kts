@@ -9,7 +9,7 @@ pluginManagement {
 }
 
 include("common")
-include("paper")
+include("bukkit")
 include("velocity")
 include("datagenerator")
 include("bungee")

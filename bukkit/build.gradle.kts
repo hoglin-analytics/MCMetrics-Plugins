@@ -1,15 +1,15 @@
 plugins {
-    alias(libs.plugins.plugin.yml.paper)
+    alias(libs.plugins.plugin.yml.bukkit)
     alias(libs.plugins.run.paper)
 }
 
 dependencies {
     implementation(project(":common"))
-    compileOnly(libs.folia.api)
+    compileOnly(libs.spigot.api)
     implementation(libs.cloud.paper)
 }
 
-paper {
+bukkit {
     name = "MCMetrics"
     main = "net.mcmetrics.bukkit.MCMetricsPlugin"
     apiVersion = "1.21"
@@ -20,5 +20,4 @@ paper {
 
 tasks.runServer {
     minecraftVersion("1.21.6")
-    jvmArgs("-Dmcmetrics.hoglin.server_key=hgln_P3l9ShsTEi5zX-OUU3-49A", "-Dmcmetrics.instance.id=testserver")
 }

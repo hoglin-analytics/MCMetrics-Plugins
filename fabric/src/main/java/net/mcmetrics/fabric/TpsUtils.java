@@ -1,5 +1,7 @@
 package net.mcmetrics.fabric;
 
+import net.mcmetrics.common.util.DoubleCircularBuffer;
+
 public class TpsUtils {
 
     public static final DoubleCircularBuffer mspt = new DoubleCircularBuffer(20 * 60); // Track for 1 minute

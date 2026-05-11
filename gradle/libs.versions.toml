@@ -7,7 +7,7 @@ fabric-loom = "1.15-SNAPSHOT"
 
 # Dependencies
 tomlj = "1.1.1"
-paper-api = "1.21.11-R0.1-SNAPSHOT"
+spigot-api = "1.21.1-R0.1-SNAPSHOT"
 lombok = "1.18.42"
 jetbrains-annotations = "26.0.2-1"
 hoglin = "1.3.0"
@@ -20,7 +20,6 @@ cloud-fabric = "2.0.0-beta.9"
 uuid-generator = "5.1.0"
 velocity-api = "3.5.0-SNAPSHOT"
 bungeecord-api = "1.21-R0.4"
-folia-api = "1.21.11-R0.1-SNAPSHOT"
 minecraft = "1.21.1"
 fabric-loader = "0.19.2"
 fabric-api = "0.116.11+1.21.1"
@@ -28,14 +27,14 @@ jackson = "2.13.0"
 
 [plugins]
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
-plugin-yml-paper = { id = "de.eldoria.plugin-yml.paper", version.ref = "plugin-yml" }
+plugin-yml-bukkit = { id = "de.eldoria.plugin-yml.bukkit", version.ref = "plugin-yml" }
 plugin-yml-bungee = { id = "de.eldoria.plugin-yml.bungee", version.ref = "plugin-yml" }
 run-paper = { id = "xyz.jpenilla.run-paper", version.ref = "run-paper" }
 fabric-loom = { id = "net.fabricmc.fabric-loom-remap", version.ref = "fabric-loom" }
 
 [libraries]
 tomlj = { module = "org.tomlj:tomlj", version.ref = "tomlj" }
-paper-api = { module = "io.papermc.paper:paper-api", version.ref = "paper-api" }
+spigot-api = { module = "org.spigotmc:spigot-api", version.ref = "spigot-api" }
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
 jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrains-annotations" }
 hoglin = { module = "gg.hoglin:sdk", version.ref = "hoglin" }
@@ -48,7 +47,6 @@ cloud-fabric = { module = "org.incendo:cloud-fabric", version.ref = "cloud-fabri
 uuid-generator = { module = "com.fasterxml.uuid:java-uuid-generator", version.ref = "uuid-generator" }
 velocity-api = { module = "com.velocitypowered:velocity-api", version.ref = "velocity-api" }
 bungeecord-api = { module = "net.md-5:bungeecord-api", version.ref = "bungeecord-api" }
-folia-api = { module = "dev.folia:folia-api", version.ref = "folia-api" }
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
 fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader" }
 fabric-api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-api" }

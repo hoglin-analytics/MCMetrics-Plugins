@@ -21,7 +21,7 @@ jobs:
         distribution: 'temurin'
 
     - name: Setup Environment Variables
-      run: echo "VERSION=${GITHUB_REF#refs/tag/}" >> $GITHUB_ENV
+      run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
     - name: Build with Gradle Cache
       uses: burrunan/gradle-cache-action@v3

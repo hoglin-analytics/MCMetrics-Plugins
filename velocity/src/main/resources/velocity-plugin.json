@@ -3,5 +3,5 @@
   "name": "MCMetrics",
   "version": "${version}",
   "description": "Advanced analytics tracking for your Minecraft server.",
-  "main": "net.mcmetrics.velocity.MCMetrics"
+  "main": "net.mcmetrics.velocity.MCMetricsPlugin"
 }

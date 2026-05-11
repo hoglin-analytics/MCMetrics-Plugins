@@ -43,7 +43,7 @@ subprojects {
     }
 }
 
-val pluginProjectNames = listOf("paper", "bungee", "velocity", "fabric")
+val pluginProjectNames = listOf("bukkit", "bungee", "velocity", "fabric")
 val pluginProjects = subprojects.filter { it.name in pluginProjectNames }
 
 tasks.register("copyBuiltJars") {
