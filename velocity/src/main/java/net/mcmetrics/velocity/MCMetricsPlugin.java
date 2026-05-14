@@ -50,6 +50,7 @@ public class MCMetricsPlugin {
         this.mcMetrics = new MCMetrics(
                 commandManager,
                 dataDir.toFile(),
+                "config.toml",
                 () -> -1.0, // Velocity doesn't have TPS
                 () -> -1.0,
                 new VelocityExperimentRunner(proxyServer),

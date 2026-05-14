@@ -35,6 +35,7 @@ public class MCMetricsPlugin extends JavaPlugin {
         this.mcMetrics = new MCMetrics(
                 commandManager,
                 getDataFolder(),
+                "config.toml",
                 NMSUtils::getTPS,
                 NMSUtils::getMSPT,
                 new BukkitExperimentRunner(),

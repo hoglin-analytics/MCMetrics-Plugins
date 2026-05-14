@@ -33,6 +33,7 @@ public class MCMetricsPlugin extends Plugin {
         this.mcMetrics = new MCMetrics(
                 commandManager,
                 getDataFolder(),
+                "config.toml",
                 () -> -1.0, // Bungee does not have TPS
                 () -> -1.0,
                 new BungeeExperimentRunner(),

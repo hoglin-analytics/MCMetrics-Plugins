@@ -29,6 +29,7 @@ public class MCMetrics {
 
     private final PlatformCommandManager commandManager;
     private final File configDir;
+    private final String configFileName;
     private final Supplier<Double> tpsSupplier;
     private final Supplier<Double> msptSupplier;
     private final TriConsumer<PlayerJoinHandler, PlayerQuitHandler, PlayerChatHandler> registerEvents;
@@ -52,6 +53,7 @@ public class MCMetrics {
     public MCMetrics(
             PlatformCommandManager commandManager,
             File configDir,
+            String configFileName,
             Supplier<Double> tpsSupplier,
             Supplier<Double> msptSupplier,
             ExperimentRunner experimentRunner,
@@ -61,6 +63,7 @@ public class MCMetrics {
     ) {
         this.commandManager = commandManager;
         this.configDir = configDir;
+        this.configFileName = configFileName;
         this.tpsSupplier = tpsSupplier;
         this.msptSupplier = msptSupplier;
         this.registerEvents = registerEvents;
@@ -70,7 +73,7 @@ public class MCMetrics {
         if (experimentRunner != null)
             this.experimentManager = new ExperimentManager(experimentRunner);
 
-        this.configLoader = new ConfigLoader<>(configDir, "config.toml", "default-config.toml", MCMetricsConfig.class);
+        this.configLoader = new ConfigLoader<>(configDir, configFileName, "default-config.toml", MCMetricsConfig.class);
 
         attemptReload();
         registerBaseCommands();

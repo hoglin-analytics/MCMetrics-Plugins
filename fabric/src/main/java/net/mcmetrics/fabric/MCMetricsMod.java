@@ -41,6 +41,7 @@ public class MCMetricsMod implements DedicatedServerModInitializer {
         this.mcMetrics = new MCMetrics(
                 commandManager,
                 FabricLoader.getInstance().getConfigDir().toFile(),
+                "mcmetrics-config.toml",
                 TpsUtils::getTps,
                 TpsUtils::getMspt,
                 null,
