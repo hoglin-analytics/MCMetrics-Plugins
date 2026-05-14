@@ -6,6 +6,7 @@ import org.incendo.cloud.annotation.specifier.Greedy;
 import org.incendo.cloud.annotation.specifier.Range;
 import org.incendo.cloud.annotations.Argument;
 import org.incendo.cloud.annotations.Command;
+import org.incendo.cloud.annotations.Flag;
 import org.incendo.cloud.annotations.Permission;
 
 import java.util.UUID;
@@ -29,7 +30,8 @@ public class TrackPurchaseCommand {
         @Argument("player_uuid") final UUID playerUuid,
         @Argument("purchase_value") @Range(min = "0") final double purchaseValue,
         @Argument("currency") final String currency,
-        @Argument("product_name") @Greedy final String productName
+        @Argument("product_name") @Greedy final String productName,
+        @Flag("purchase-id") final String productId
     ) {
 
         if (!mcMetrics.getHoglinLoader().isLoaded()) {
@@ -42,7 +44,8 @@ public class TrackPurchaseCommand {
             playerUuid,
             productName,
             currency,
-            purchaseValue
+            purchaseValue,
+            productId
         ));
     }
 
