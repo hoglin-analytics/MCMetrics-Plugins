@@ -56,6 +56,7 @@ public class NMSUtils {
             try {
                 // Minecraft server
                 MINECRAFT_SERVER_CLASS = Class.forName("net.minecraft.server.MinecraftServer");
+                SERVER_TICK_RATE_MANAGER_CLASS = Class.forName("net.minecraft.server.ServerTickRateManager");
                 MINECRAFT_SERVER_GET_SERVER = MINECRAFT_SERVER_CLASS.getDeclaredMethod("getServer"); // Technically this is deprecated but screw it
                 MINECRAFT_SERVER_RECENT_TPS = MINECRAFT_SERVER_CLASS.getDeclaredField("recentTps");
                 for (Method m : MINECRAFT_SERVER_CLASS.getDeclaredMethods()) {
@@ -67,7 +68,6 @@ public class NMSUtils {
                 }
 
                 // Tick rate manager
-                SERVER_TICK_RATE_MANAGER_CLASS = Class.forName("net.minecraft.server.ServerTickRateManager");
                 for (Method m : SERVER_TICK_RATE_MANAGER_CLASS.getMethods()) {
                     if (m.getReturnType() == long.class) {
                         TICK_RATE_MANAGER_GET_NANOSECONDS_PER_TICK = m;
