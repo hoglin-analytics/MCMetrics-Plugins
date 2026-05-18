@@ -158,7 +158,7 @@ public class DataGenerator {
                     String instance = getRandomElement(INSTANCES);
                     String pkg = getRandomElement(PACKAGES);
                     double price = getRandomElement(PURCHASE_PRICES);
-                    PlayerPurchaseAnalytic analytic =  new PlayerPurchaseAnalytic(instance, uuid, pkg, CURRENCY, price);
+                    PlayerPurchaseAnalytic analytic =  new PlayerPurchaseAnalytic(instance, uuid, pkg, CURRENCY, price, null);
                     events.add(new RecordedAnalytic<>("player_purchase", curTime, analytic));
                 }
             }
