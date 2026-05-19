@@ -111,7 +111,9 @@ public class DataGenerator {
                             hostname,
                             ip,
                             isJava ? ClientPlatform.JAVA : ClientPlatform.BEDROCK,
-                            isNew);
+                            isNew,
+                            false
+                    );
                     events.add(new RecordedAnalytic<>("player_join", curTime, analytic));
                 } else {
                     // Player quiting
@@ -127,7 +129,8 @@ public class DataGenerator {
                             playerSession.hostname,
                             playerSession.ip,
                             playerSession.isJava ? ClientPlatform.JAVA : ClientPlatform.BEDROCK,
-                            (t - playerSession.startTime) * 60 * 1000
+                            (t - playerSession.startTime) * 60 * 1000,
+                            false
                     );
                     events.add(new RecordedAnalytic<>("player_quit", curTime, analytic));
                 }
@@ -155,7 +158,7 @@ public class DataGenerator {
                     String instance = getRandomElement(INSTANCES);
                     String pkg = getRandomElement(PACKAGES);
                     double price = getRandomElement(PURCHASE_PRICES);
-                    PlayerPurchaseAnalytic analytic =  new PlayerPurchaseAnalytic(instance, uuid, pkg, CURRENCY, price);
+                    PlayerPurchaseAnalytic analytic =  new PlayerPurchaseAnalytic(instance, uuid, pkg, CURRENCY, price, null);
                     events.add(new RecordedAnalytic<>("player_purchase", curTime, analytic));
                 }
             }
@@ -169,7 +172,7 @@ public class DataGenerator {
                     int totalPlayers = uuids.size();
                     int totalJavaPlayers = javaPlayers.stream().filter(uuids::contains).toList().size();
                     int totalBedrockPlayers = totalPlayers - totalJavaPlayers;
-                    ServerPlayerCountAnalytic analytic = new ServerPlayerCountAnalytic(instance, totalJavaPlayers, totalBedrockPlayers, totalPlayers);
+                    ServerPlayerCountAnalytic analytic = new ServerPlayerCountAnalytic(instance, totalJavaPlayers, totalBedrockPlayers, totalPlayers, false);
                     events.add(new RecordedAnalytic<>("server_player_count", curTime, analytic));
                 }
             }

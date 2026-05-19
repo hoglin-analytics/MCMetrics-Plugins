@@ -3,6 +3,7 @@ package net.mcmetrics.common.analytic.player;
 import gg.hoglin.sdk.models.analytic.NamedAnalytic;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -17,6 +18,7 @@ public class PlayerPurchaseAnalytic implements NamedAnalytic {
     private final @NotNull String productName;
     private final @NotNull String currency;
     private final @NotNull Double purchaseValue;
+    private final @Nullable String productId;
 
     @Override
     public @NotNull String getEventType() {

@@ -23,13 +23,15 @@ public class PlayerJoinAnalytic implements NamedAnalytic {
     private final @NotNull String ip;
     private final @NotNull ClientPlatform clientPlatform;
     private final boolean newPlayer;
+    private final boolean proxy;
 
     public PlayerJoinAnalytic(
         final @NotNull String instance,
         final @NotNull String sessionId,
         final @NotNull UUID playerUUID,
         final @NotNull TrackedPlayer trackedPlayer,
-        final boolean newPlayer
+        final boolean newPlayer,
+        final boolean proxy
     ) {
         this.instance = instance;
         this.sessionId = sessionId;
@@ -38,6 +40,7 @@ public class PlayerJoinAnalytic implements NamedAnalytic {
         this.ip = trackedPlayer.getIp();
         this.clientPlatform = trackedPlayer.getClientPlatform();
         this.newPlayer = newPlayer;
+        this.proxy = proxy;
     }
 
     @Override

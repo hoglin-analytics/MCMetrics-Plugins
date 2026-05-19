@@ -1,6 +1,6 @@
 package net.mcmetrics.fabric.mixin;
 
-import net.mcmetrics.fabric.MCMetrics;
+import net.mcmetrics.fabric.MCMetricsMod;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.handshake.ClientIntentionPacket;
 import net.minecraft.server.network.ServerHandshakePacketListenerImpl;
@@ -20,6 +20,6 @@ public class ServerHandshakePacketListenerImplMixin {
 
     @Inject(method = "handleIntention", at = @At("HEAD"))
     public void handleIntention(ClientIntentionPacket packet, CallbackInfo ci) {
-        MCMetrics.getInstance().getHostnameStore().set(this.connection, packet.hostName() + ":" + packet.port());
+        MCMetricsMod.getInstance().getHostnameStore().set(this.connection, packet.hostName() + ":" + packet.port());
     }
 }

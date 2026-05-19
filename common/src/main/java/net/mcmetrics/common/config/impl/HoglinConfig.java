@@ -1,21 +1,24 @@
 package net.mcmetrics.common.config.impl;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 @Getter
 @Accessors(fluent = true)
+@ToString
 public class HoglinConfig {
-    @SerializedName("server_key")
+
+    @JsonProperty("server_key")
     private String serverKey;
 
-    @SerializedName("auto_flush_interval")
+    @JsonProperty("auto_flush_interval")
     private long autoFlushInterval;
 
-    @SerializedName("auto_flush_max_batch_size")
+    @JsonProperty("auto_flush_max_batch_size")
     private int autoFlushMaxBatchSize;
 
-    @SerializedName("api_server")
+    @JsonProperty("api_server")
     private String apiServerUrl;
 }

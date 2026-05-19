@@ -10,6 +10,6 @@ dependencies {
 
 bungee {
     name = "MCMetrics"
-    main = "net.mcmetrics.bungee.MCMetrics"
+    main = "net.mcmetrics.bungee.MCMetricsPlugin"
     description = "Advanced analytics tracking for your Minecraft server."
 }

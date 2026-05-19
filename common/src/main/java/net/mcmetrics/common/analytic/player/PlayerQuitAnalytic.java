@@ -23,6 +23,7 @@ public class PlayerQuitAnalytic implements NamedAnalytic {
     private final @NotNull ClientPlatform clientPlatform;
 
     private final long sessionTime;
+    private final boolean proxy;
 
     @Override
     public @NotNull String getEventType() {

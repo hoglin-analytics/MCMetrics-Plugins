@@ -14,6 +14,7 @@ public class ServerPlayerCountAnalytic implements NamedAnalytic {
     private final @NotNull Integer javaPlayerCount;
     private final @NotNull Integer bedrockPlayerCount;
     private final @NotNull Integer totalPlayerCount;
+    private final @NotNull Boolean proxy;
 
     @Override
     public @NotNull String getEventType() {
