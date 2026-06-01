@@ -1,0 +1,34 @@
+name: mcmetrics-dev-bukkit-folia
+
+services:
+  folia:
+    image: itzg/minecraft-server:java21
+    environment:
+      EULA: "TRUE"
+      TYPE: FOLIA
+      VERSION: ${FOLIA_MC_VERSION:-1.21.6}
+      FOLIA_CHANNEL: ${FOLIA_CHANNEL:-experimental}
+      MEMORY: ${SERVER_MEMORY:-2G}
+      ONLINE_MODE: "FALSE"
+      ENFORCE_SECURE_PROFILE: "FALSE"
+      MODE: creative
+      DIFFICULTY: peaceful
+      SPAWN_PROTECTION: "0"
+      MOTD: MCMetrics Folia dev
+      SYNC_SKIP_NEWER_IN_DESTINATION: "false"
+      JVM_OPTS: >-
+        -Dmcmetrics.hoglin.api_server=${MCMETRICS_API_SERVER:-https://api.mcmetrics.net}
+        -Dmcmetrics.hoglin.server_key=${MCMETRICS_SERVER_KEY:-}
+        -Dmcmetrics.instance.id=${MCMETRICS_FOLIA_INSTANCE_ID:-folia-dev}
+        -Dmcmetrics.hoglin.auto_flush_interval=${MCMETRICS_AUTO_FLUSH_INTERVAL:-15000}
+        -Dmcmetrics.hoglin.auto_flush_max_batch_size=${MCMETRICS_AUTO_FLUSH_MAX_BATCH_SIZE:-10000}
+    ports:
+      - "127.0.0.1:${FOLIA_PORT:-25567}:25565"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - folia-data:/data
+      - ./plugins/bukkit:/plugins:ro
+
+volumes:
+  folia-data:

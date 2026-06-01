@@ -1,0 +1,27 @@
+{
+  "name": "mcmetrics-plugin-e2e",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "test": "vitest run",
+    "proxy": "tsx src/bin/proxy.ts",
+    "e2e": "tsx src/run-target.ts",
+    "e2e:paper": "tsx src/run-target.ts paper",
+    "e2e:spigot": "tsx src/run-target.ts spigot",
+    "e2e:folia": "tsx src/run-target.ts folia",
+    "e2e:fabric": "tsx src/run-target.ts fabric",
+    "e2e:velocity": "tsx src/run-target.ts velocity",
+    "e2e:bungee": "tsx src/run-target.ts bungee",
+    "e2e:waterfall": "tsx src/run-target.ts waterfall"
+  },
+  "dependencies": {
+    "minecraft-protocol": "^1.66.2"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.8"
+  }
+}

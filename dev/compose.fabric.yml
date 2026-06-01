@@ -1,0 +1,37 @@
+name: mcmetrics-dev-fabric
+
+services:
+  fabric:
+    image: itzg/minecraft-server:java21
+    environment:
+      EULA: "TRUE"
+      TYPE: FABRIC
+      VERSION: ${FABRIC_MC_VERSION:-1.21.1}
+      FABRIC_LOADER_VERSION: ${FABRIC_LOADER_VERSION:-0.19.2}
+      MEMORY: ${SERVER_MEMORY:-2G}
+      ONLINE_MODE: "FALSE"
+      ENFORCE_SECURE_PROFILE: "FALSE"
+      MODE: creative
+      DIFFICULTY: peaceful
+      SPAWN_PROTECTION: "0"
+      MOTD: MCMetrics Fabric dev
+      MODRINTH_PROJECTS: |
+        fabric-api
+      MODRINTH_DOWNLOAD_DEPENDENCIES: required
+      SYNC_SKIP_NEWER_IN_DESTINATION: "false"
+      JVM_OPTS: >-
+        -Dmcmetrics.hoglin.api_server=${MCMETRICS_API_SERVER:-https://api.mcmetrics.net}
+        -Dmcmetrics.hoglin.server_key=${MCMETRICS_SERVER_KEY:-}
+        -Dmcmetrics.instance.id=${MCMETRICS_FABRIC_INSTANCE_ID:-fabric-dev}
+        -Dmcmetrics.hoglin.auto_flush_interval=${MCMETRICS_AUTO_FLUSH_INTERVAL:-15000}
+        -Dmcmetrics.hoglin.auto_flush_max_batch_size=${MCMETRICS_AUTO_FLUSH_MAX_BATCH_SIZE:-10000}
+    ports:
+      - "127.0.0.1:${FABRIC_PORT:-25568}:25565"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - fabric-data:/data
+      - ./plugins/fabric:/mods:ro
+
+volumes:
+  fabric-data:

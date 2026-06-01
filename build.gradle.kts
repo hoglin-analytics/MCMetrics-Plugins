@@ -1,4 +1,5 @@
 import org.gradle.api.Project.DEFAULT_BUILD_DIR_NAME
+import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.kotlin.dsl.support.uppercaseFirstChar
 
 plugins {
@@ -22,6 +23,10 @@ allprojects {
 
 subprojects {
     apply(plugin = "java")
+
+    tasks.withType<JavaCompile>().configureEach {
+        options.release.set(21)
+    }
 
     dependencies {
         implementation(rootProject.libs.hoglin)

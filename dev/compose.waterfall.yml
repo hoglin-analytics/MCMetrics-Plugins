@@ -1,0 +1,50 @@
+name: mcmetrics-dev-waterfall
+
+services:
+  backend:
+    image: itzg/minecraft-server:java21
+    environment:
+      EULA: "TRUE"
+      TYPE: PAPER
+      VERSION: ${PROXY_BACKEND_MC_VERSION:-1.21.6}
+      MEMORY: ${SERVER_MEMORY:-2G}
+      ONLINE_MODE: "FALSE"
+      ENFORCE_SECURE_PROFILE: "FALSE"
+      MODE: creative
+      DIFFICULTY: peaceful
+      SPAWN_PROTECTION: "0"
+      MOTD: MCMetrics Waterfall backend
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - waterfall-backend-data:/data
+
+  proxy:
+    image: itzg/mc-proxy:java21
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      TYPE: WATERFALL
+      MEMORY: ${PROXY_MEMORY:-512M}
+      CFG_MOTD: MCMetrics Waterfall dev
+      REPLACE_ENV_VARIABLES: "true"
+      SERVER_PORT: "25577"
+      JVM_OPTS: >-
+        -Dmcmetrics.hoglin.api_server=${MCMETRICS_API_SERVER:-https://api.mcmetrics.net}
+        -Dmcmetrics.hoglin.server_key=${MCMETRICS_SERVER_KEY:-}
+        -Dmcmetrics.instance.id=${MCMETRICS_WATERFALL_INSTANCE_ID:-waterfall-dev}
+        -Dmcmetrics.hoglin.auto_flush_interval=${MCMETRICS_AUTO_FLUSH_INTERVAL:-15000}
+        -Dmcmetrics.hoglin.auto_flush_max_batch_size=${MCMETRICS_AUTO_FLUSH_MAX_BATCH_SIZE:-10000}
+    ports:
+      - "127.0.0.1:${WATERFALL_PORT:-25571}:25577"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - waterfall-proxy-data:/server
+      - ./plugins/bungee:/plugins:ro
+      - ./config/bungee:/config:ro
+
+volumes:
+  waterfall-backend-data:
+  waterfall-proxy-data:

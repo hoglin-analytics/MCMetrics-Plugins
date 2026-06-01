@@ -1,0 +1,21 @@
+# Local Velocity config for the MCMetrics Docker dev stack.
+# The proxy listens on 25577 in-container so Bungee/Velocity compose files are consistent.
+config-version = "2.7"
+bind = "0.0.0.0:25577"
+motd = "MCMetrics Velocity dev"
+show-max-players = 20
+online-mode = false
+force-key-authentication = false
+prevent-client-proxy-connections = false
+player-info-forwarding-mode = "none"
+forwarding-secret-file = "forwarding.secret"
+announce-forge = false
+kick-existing-players = false
+ping-passthrough = "disabled"
+enable-player-address-logging = true
+
+[servers]
+lobby = "backend:25565"
+try = ["lobby"]
+
+[forced-hosts]
