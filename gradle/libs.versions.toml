@@ -17,6 +17,7 @@ cloud-paper = "2.0.0-beta.14"
 cloud-velocity = "2.0.0-beta.14"
 cloud-bungee = "2.0.0-beta.14"
 cloud-fabric = "2.0.0-beta.9"
+brigadier = "1.3.10"
 uuid-generator = "5.1.0"
 velocity-api = "3.5.0-SNAPSHOT"
 bungeecord-api = "1.21-R0.4"
@@ -44,6 +45,7 @@ cloud-paper = { module = "org.incendo:cloud-paper", version.ref = "cloud-paper" 
 cloud-velocity = { module = "org.incendo:cloud-velocity", version.ref = "cloud-velocity" }
 cloud-bungee = { module = "org.incendo:cloud-bungee", version.ref = "cloud-bungee" }
 cloud-fabric = { module = "org.incendo:cloud-fabric", version.ref = "cloud-fabric" }
+brigadier = { module = "com.mojang:brigadier", version.ref = "brigadier" }
 uuid-generator = { module = "com.fasterxml.uuid:java-uuid-generator", version.ref = "uuid-generator" }
 velocity-api = { module = "com.velocitypowered:velocity-api", version.ref = "velocity-api" }
 bungeecord-api = { module = "net.md-5:bungeecord-api", version.ref = "bungeecord-api" }

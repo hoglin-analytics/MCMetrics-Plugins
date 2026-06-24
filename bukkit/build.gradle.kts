@@ -6,6 +6,7 @@ plugins {
 dependencies {
     implementation(project(":common"))
     compileOnly(libs.spigot.api)
+    compileOnly(libs.brigadier)
     implementation(libs.cloud.paper)
 }
 

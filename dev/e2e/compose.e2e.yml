@@ -1,0 +1,17 @@
+services:
+  hoglin-api-proxy:
+    build:
+      context: ./e2e
+    environment:
+      PORT: "8080"
+    ports:
+      - "127.0.0.1:${HOGLIN_API_PROXY_ADMIN_PORT:-18080}:8080"
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:8080/__admin/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
+      interval: 2s
+      timeout: 2s
+      retries: 30

@@ -1,0 +1,33 @@
+name: mcmetrics-dev-bukkit-paper
+
+services:
+  paper:
+    image: itzg/minecraft-server:java21
+    environment:
+      EULA: "TRUE"
+      TYPE: PAPER
+      VERSION: ${PAPER_MC_VERSION:-1.21.6}
+      MEMORY: ${SERVER_MEMORY:-2G}
+      ONLINE_MODE: "FALSE"
+      ENFORCE_SECURE_PROFILE: "FALSE"
+      MODE: creative
+      DIFFICULTY: peaceful
+      SPAWN_PROTECTION: "0"
+      MOTD: MCMetrics Paper dev
+      SYNC_SKIP_NEWER_IN_DESTINATION: "false"
+      JVM_OPTS: >-
+        -Dmcmetrics.hoglin.api_server=${MCMETRICS_API_SERVER:-https://api.mcmetrics.net}
+        -Dmcmetrics.hoglin.server_key=${MCMETRICS_SERVER_KEY:-}
+        -Dmcmetrics.instance.id=${MCMETRICS_PAPER_INSTANCE_ID:-paper-dev}
+        -Dmcmetrics.hoglin.auto_flush_interval=${MCMETRICS_AUTO_FLUSH_INTERVAL:-15000}
+        -Dmcmetrics.hoglin.auto_flush_max_batch_size=${MCMETRICS_AUTO_FLUSH_MAX_BATCH_SIZE:-10000}
+    ports:
+      - "127.0.0.1:${PAPER_PORT:-25565}:25565"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - paper-data:/data
+      - ./plugins/bukkit:/plugins:ro
+
+volumes:
+  paper-data:

@@ -1,0 +1,204 @@
+name: E2E
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: E2E target to run
+        type: choice
+        default: all
+        options:
+          - all
+          - paper
+          - spigot
+          - folia
+          - fabric
+          - velocity
+          - bungee
+          - waterfall
+  pull_request:
+    paths:
+      - .github/workflows/e2e.yml
+      - build.gradle.kts
+      - settings.gradle.kts
+      - gradle/**
+      - gradlew
+      - gradlew.bat
+      - common/**
+      - bukkit/**
+      - bungee/**
+      - fabric/**
+      - velocity/**
+      - dev/**
+  push:
+    branches:
+      - master
+    paths:
+      - .github/workflows/e2e.yml
+      - build.gradle.kts
+      - settings.gradle.kts
+      - gradle/**
+      - gradlew
+      - gradlew.bat
+      - common/**
+      - bukkit/**
+      - bungee/**
+      - fabric/**
+      - velocity/**
+      - dev/**
+
+permissions:
+  contents: read
+
+jobs:
+  select-targets:
+    name: Select E2E targets
+    runs-on: ubuntu-latest
+    outputs:
+      targets: ${{ steps.targets.outputs.targets }}
+    steps:
+      - id: targets
+        env:
+          REQUESTED_TARGET: ${{ github.event.inputs.target || 'all' }}
+        run: |
+          set -euo pipefail
+
+          case "$REQUESTED_TARGET" in
+            all)
+              targets='[
+                {"target":"paper","compose_file":"compose.bukkit-paper.yml"},
+                {"target":"spigot","compose_file":"compose.bukkit-spigot.yml"},
+                {"target":"folia","compose_file":"compose.bukkit-folia.yml"},
+                {"target":"fabric","compose_file":"compose.fabric.yml"},
+                {"target":"velocity","compose_file":"compose.velocity.yml"},
+                {"target":"bungee","compose_file":"compose.bungee.yml"},
+                {"target":"waterfall","compose_file":"compose.waterfall.yml"}
+              ]'
+              ;;
+            paper|spigot|folia|fabric|velocity|bungee|waterfall)
+              case "$REQUESTED_TARGET" in
+                paper) compose_file='compose.bukkit-paper.yml' ;;
+                spigot) compose_file='compose.bukkit-spigot.yml' ;;
+                folia) compose_file='compose.bukkit-folia.yml' ;;
+                fabric) compose_file='compose.fabric.yml' ;;
+                velocity) compose_file='compose.velocity.yml' ;;
+                bungee) compose_file='compose.bungee.yml' ;;
+                waterfall) compose_file='compose.waterfall.yml' ;;
+              esac
+              targets="[{\"target\":\"$REQUESTED_TARGET\",\"compose_file\":\"$compose_file\"}]"
+              ;;
+            *)
+              echo "Unknown target: $REQUESTED_TARGET" >&2
+              exit 1
+              ;;
+          esac
+
+          echo "targets=$(echo "$targets" | tr -d '\n' | sed 's/[[:space:]]\+/ /g')" >> "$GITHUB_OUTPUT"
+
+  e2e-harness:
+    name: TypeScript E2E harness checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: dev/e2e/package-lock.json
+
+      - name: Install E2E dependencies
+        working-directory: dev/e2e
+        run: npm ci
+
+      - name: Type-check E2E harness
+        working-directory: dev/e2e
+        run: npm run build
+
+      - name: Run E2E harness unit tests
+        working-directory: dev/e2e
+        run: npm test
+
+  e2e:
+    name: E2E ${{ matrix.target }}
+    runs-on: ubuntu-latest
+    needs:
+      - select-targets
+      - e2e-harness
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        include: ${{ fromJSON(needs.select-targets.outputs.targets) }}
+    env:
+      VERSION: ${{ github.sha }}
+      COMPOSE_PROJECT_NAME: mcmetrics-e2e-${{ matrix.target }}-${{ github.run_id }}-${{ github.run_attempt }}
+      E2E_KEEP_STACK: "true"
+      MCMETRICS_SERVER_KEY: e2e-server-key
+      MCMETRICS_API_SERVER: http://hoglin-api-proxy:8080
+      MCMETRICS_AUTO_FLUSH_INTERVAL: "1000"
+      MCMETRICS_AUTO_FLUSH_MAX_BATCH_SIZE: "100"
+      HOGLIN_API_PROXY_ADMIN_PORT: "18080"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: dev/e2e/package-lock.json
+
+      - name: Show Docker Compose version
+        run: docker compose version
+
+      - name: Install E2E dependencies
+        working-directory: dev/e2e
+        run: npm ci
+
+      - name: Build and stage plugin jars
+        run: ./dev/sync-jars.sh
+
+      - name: Run ${{ matrix.target }} E2E tests
+        working-directory: dev/e2e
+        run: npm run e2e -- ${{ matrix.target }}
+
+      - name: Save Docker Compose logs on failure
+        if: failure()
+        working-directory: dev
+        run: |
+          mkdir -p e2e/artifacts
+          docker compose \
+            -p "$COMPOSE_PROJECT_NAME" \
+            -f "${{ matrix.compose_file }}" \
+            -f e2e/compose.e2e.yml \
+            logs --no-color > "e2e/artifacts/${{ matrix.target }}.log" || true
+
+      - name: Upload Docker Compose logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-${{ matrix.target }}-logs
+          path: dev/e2e/artifacts/${{ matrix.target }}.log
+          if-no-files-found: ignore
+
+      - name: Stop E2E stack
+        if: always()
+        working-directory: dev
+        run: |
+          docker compose \
+            -p "$COMPOSE_PROJECT_NAME" \
+            -f "${{ matrix.compose_file }}" \
+            -f e2e/compose.e2e.yml \
+            down -v --remove-orphans || true
